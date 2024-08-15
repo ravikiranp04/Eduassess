@@ -1,0 +1,11 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.rootlayout{
+    background-image:linear-gradient(to right,rgba(179, 126, 243, 0.5), rgba(245, 146, 223, 0.5)), url('../screenshots/Screenshot\ 2024-05-27\ 112919.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+}

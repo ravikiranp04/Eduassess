@@ -1,0 +1,18 @@
+label {
+    font-size: 25px;
+}
+.out1{
+    
+    margin-left: 500px;
+}
+select{
+    width: 25%;
+    font-size: 25px;
+}
+input{
+    width: 25%;
+    font-size: 25px;
+}
+.btns{
+    margin-left: 500px;
+}

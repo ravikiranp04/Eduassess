@@ -1,0 +1,56 @@
+.assessment-creation-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .assessment-creation-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .assessment-creation-main {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .assessment-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="file"] {
+    width: calc(100% - 12px);
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .form-group button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .form-group button:hover {
+    background-color: #0056b3;
+  }
+  

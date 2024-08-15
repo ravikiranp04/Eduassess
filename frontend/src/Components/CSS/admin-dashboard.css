@@ -1,0 +1,69 @@
+/* Dashboard component styles */
+.dashboard-container {
+    padding: 20px;
+  }
+  
+  .d-flex {
+    display: flex;
+  }
+  
+  .justify-content-center {
+    justify-content: center;
+  }
+  
+  .w-25 {
+    width: 25%;
+  }
+  
+  .w-75 {
+    width: 75%;
+  }
+  
+  .bg-light {
+    background-color: #f0f0f0;
+  }
+  
+  .bg-warning {
+    background-color: #ffc107;
+  }
+  
+  .p-3 {
+    padding: 1rem;
+  }
+  
+  .mb-3 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mt-3 {
+    margin-top: 1.5rem;
+  }
+  
+  .sidebar-heading,
+  .main-heading {
+    font-size: 1.5rem;
+  }
+  
+  .subject-list,
+  .subtype-list {
+    margin-top: 10px;
+  }
+  
+  .subject-item,
+  .subtype-item {
+    margin-bottom: 5px;
+  }
+  
+  .subject-label,
+  .subtype-label {
+    font-size: 1rem;
+  }
+  
+  .main-content {
+    font-size: 0.9rem;
+  }
+  
+  .text-muted {
+    color: #6c757d;
+  }
+  

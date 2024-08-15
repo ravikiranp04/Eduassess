@@ -1,0 +1,368 @@
+### Demo registration and Admin Operation
+POST http://localhost:8000/admin-api/demo
+Content-Type: application/json
+
+{
+    "testId":"{{$timestamp}}",
+    "email":"ravi2@gmail.com",
+    "mobileNo":7381022579,
+    "Subject":"Data Structures",
+    "registerTime":"{{$datetime iso8601}}",
+    "validity":"",
+    "status":true
+}
+
+
+//------------------------------Admin Operations-----------------------
+###Admins Register
+POST http://localhost:8000/admin-api/register
+Content-Type: application/json
+
+{
+    "userType":"Teacher",
+    "username":"admin",
+    "email":"admin@gmail.com",
+    "password":"admin"
+    
+}
+
+###Admin Login
+POST http://localhost:8000/admin-api/login
+Content-Type: application/json
+
+{
+    "userType":"admin",
+    "username":"admin",
+    "password":"admin" 
+}
+
+###Adding Questions
+POST http://localhost:8000/admin-api/add-qs
+Content-Type: application/json
+
+{
+    "subject":"",
+    "qs_id":"{{$timestamp}}",
+    "sub_type":"",
+    "question":"",
+    "img":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    //"answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    
+    "display_status":false
+}
+###Questions available in the database previously
+GET http://localhost:8000/admin-api/prev-qs
+
+###soft delete a question(disable)
+PUT http://localhost:8000/admin-api/soft-del/1715859614
+
+###Enable a question(disable)
+PUT http://localhost:8000/admin-api/enable/1715859614
+
+###Admin to modify his existing questions 
+PUT http://localhost:8000/admin-api/modify-qs
+Content-Type: application/json
+
+{
+    "subject":"",
+    "qs_id":"1715859612",
+    "sub_type":"arrays11",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":false
+}
+
+###Add a subject
+POST http://localhost:8000/admin-api/add-subject
+Content-Type: application/json
+
+{
+    "subjectid":"{{$timestamp}}",
+    "subject": "Cybersecurity",
+    "subtypes":["Cryptography","Network Security"]
+}
+###Modify a subject
+PUT http://localhost:8000/admin-api/modify-subject
+Content-Type: application/json
+
+{
+    "subjectid":"1718595769",
+    "subject": "Data Structure",
+    "subtypes":["Arrays","stack"]
+}
+###Delete a subject
+DELETE http://localhost:8000/admin-api/delete-subject/1718213624
+
+### Get my subjects
+GET http://localhost:8000/admin-api/get-subjects
+
+
+### Get my subject categories
+GET http://localhost:8000/admin-api/get-subject-cat/1718596076
+
+
+
+ //---------------------------Teacher operations----------------------------
+### Teacher  Register
+POST http://localhost:8000/teacher-api/register
+Content-Type: application/json
+
+{
+    "userType":"Teacher",
+    "username":"ravi",
+    "email":"ravi_04@gmail.com",
+    "password":"ravi_04"
+    
+}
+### teacher Login
+POST http://localhost:8000/teacher-api/login
+Content-Type: application/json
+
+{
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "password":"ravi_04"
+    
+}
+
+
+###Teacher Plan Upgrade
+PUT http://localhost:8000/teacher-api/upgrade/ravi_04/6
+
+###Teacher Adding Question
+POST http://localhost:8000/teacher-api/add-qs
+Content-Type: application/json
+
+{
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"{{$timestamp}}",
+    "sub_type":"",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+}
+
+###Questions created by a teacher previously
+GET http://localhost:8000/teacher-api/prev-qs/ravi_04
+
+###Getting display of Questions created by admin
+GET http://localhost:8000/teacher-api/prev-qs-admin
+
+###Teacher deleting his own previous question
+PUT http://localhost:8000/teacher-api/del-qs/1715698915
+
+### Teacher Modifying his previous question
+PUT http://localhost:8000/teacher-api/modify-qs/ravi_04/Teacher
+Content-Type: application/json
+
+{
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"1715861659",
+    "sub_type":"Datastructures",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+}
+
+
+### Teacher creating a test -----
+POST http://localhost:8000/teacher-api/create-test/ravi_04/Teacher
+Content-Type: application/json
+
+{
+    "testid":1600,
+    "createdBy":"ravi_04",
+    "start_time":"",
+    "end_time":"",
+    "duration":"",
+    "questions":[
+        {
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"4546",
+    "sub_type":"",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+},
+{
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"455",
+    "sub_type":"",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+}
+    ],
+    "students_attempted":[],
+    "validity":false,
+    "total_marks":0,
+    "marks_scored":0
+}
+
+###Changing Marking scheme for correct answers
+PUT http://localhost:8000/teacher-api/correct/ravi_04/1100/4
+
+
+### Changing Marking Scheme for wrong answers
+PUT http://localhost:8000/teacher-api/wrong/ravi_04/1100/-2
+
+
+### Activate a test already created -----
+PUT http://localhost:8000/teacher-api/activate/ravi_04/1100/ravi_04/Teacher
+
+### Deactivate the test
+PUT http://localhost:8000/teacher-api/deactivate/ravi_04/1100
+
+
+
+//---------------Student Operations-------------------------------
+
+
+### Student register
+POST http://localhost:8000/student-api/register
+Content-Type: application/json
+
+{
+    "userType":"Student",
+    "username":"shiva_04",
+    "email":"shiva_04@gmail.com",
+    "password":"shiva_04"
+}
+### Student Login
+POST http://localhost:8000/student-api/login
+Content-Type: application/json
+
+{
+    "userType":"Student",
+    "username":"shiva_04",
+    "password":"shiva_04"
+}
+
+###Student Plan Upgrade
+PUT http://localhost:8000/student-api/upgrade/shiva_04/6
+
+
+###Dispaly of tests created by teacher username
+get http://localhost:8000/student-api/display-tests/ravi_04
+
+### Start a test ----
+get http://localhost:8000/student-api/start-test/shiva_04/ravi_04/1100/shiva_04/Student
+
+###End a Test
+POST http://localhost:8000/student-api/end-test
+Content-Type: application/json
+
+{
+    "username":"shiva_04",
+    "testid":1100,
+    "createdBy":"ravi_04",
+    "start_time":"",
+    "end_time":"",
+    "duration":"",
+    "questions":[
+        {
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"4546",
+    "sub_type":"",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+},
+{
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"455",
+    "sub_type":"",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+}
+    ],
+    "total_marks":0,
+    "marks_scored":0
+    
+}
+
+
+###Display Previous Tests of Student
+GET http://localhost:8000/student-api/display-prev-tests/shiva_04
