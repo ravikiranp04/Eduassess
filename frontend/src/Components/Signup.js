@@ -1,145 +1,98 @@
 import "./CSS/Signup.css";
 import { useForm } from "react-hook-form";
-import axios from 'axios'
-import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../port";
+import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
+import { Link } from "react-router-dom";
 function Signup() {
-  const navigate=useNavigate()
-  let { register, handleSubmit } = useForm();
-  let [err,setErr]=useState('')
-  const submitform=async(obj)=>{
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const [err, setErr] = useState("");
+  
+  const submitform = async (obj) => {
     console.log(obj);
-    const res= await axios.post(`${BASE_URL}/teacher-api/register`,obj);
-    console.log(res)
-    if(res.data.message=='Student Profile Created' || res.data.message=='Teacher Profile Created' || res.data.message==='Admin Profile Created' ){
-        navigate('/signin')
+    const res = await axios.post(`${BASE_URL}/teacher-api/register`, obj);
+    console.log(res);
+    if (
+      res.data.message === "Student Profile Created" ||
+      res.data.message === "Teacher Profile Created" ||
+      res.data.message === "Admin Profile Created"
+    ) {
+      navigate("/signin");
+    } else {
+      setErr(res.data.message);
     }
-    else{
-      setErr(res.data.message)
-    }
-  }
+  };
 
   return (
-    <div className="container">
-      <div className="row justify-content-center mt-5">
-        <div className="col-lg-4 col-md-6 col-sm-6">
-          <div className="card shadow">
-            <div className="card-title text-center border-bottom">
-              <h2 className="p-3">Signup</h2>
-            </div>
-            <div className="card-body">
-
-              {/* user register error message */}
-              {err.length!=0&&<p className="text-danger text-center">{err}</p>}
-              <form onSubmit={handleSubmit(submitform)}>
-                {/* radio */}
-                <div className="mb-4">
-                  <label
-                    htmlFor="user"
-                    className="form-check-label me-3"
-                    style={{
-                      fontSize: "1.2rem",
-                      color: "var(--light-dark-grey)",
-                    }}
-                  >
-                    Register as
-                  </label>
-                  <div className="form-check form-check-inline">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      id="Teacher"
-                      value="Teacher"
-                      {...register("userType")}
-                    />
-                    <label
-                      htmlFor="Teacher"
-                      className="form-check-label"
-                      style={{ color: "var(--dark-green)" }}
-                    >
-                      Teacher
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      id="Student"
-                      value="Student"
-                      {...register("userType")}
-                    />
-                    <label
-                      htmlFor="Student"
-                      className="form-check-label"
-                      style={{ color: "var(--dark-green)" }}
-                    >
-                      Student
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline">
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      id="admin"
-                      value="admin"
-                      {...register("userType")}
-                    />
-                    <label
-                      htmlFor="admin"
-                      className="form-check-label"
-                      style={{ color: "var(--dark-green)" }}
-                    >
-                      Admin
-                    </label>
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="username" className="form-label">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control "
-                    id="username"
-                    {...register("username")}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="password" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control "
-                    id="password"
-                    {...register("password")}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    {...register("email")}
-                  />
-                </div>
-
-                <div className="text-end">
-                  <button
-                    type="submit"
-                    className="text-light d-block mx-auto"
-                    style={{ backgroundColor: "var(--dark-maroon)" }}
-                  >
-                    Register
-                  </button>
-                </div>
-              </form>
+    <div className="signup-container">
+      <div className="signup-card">
+        <h2 className="signup-title">Create Account</h2>
+        {err.length !== 0 && <p className="error-message">{err}</p>}
+        
+        <form onSubmit={handleSubmit(submitform)}>
+          {/* Radio Buttons for user type */}
+          <div className="user-type-container">
+            <label className="user-type-label">Register as</label>
+            <div className="radio-buttons">
+              <label className="radio-option">
+                <input type="radio" value="Teacher" {...register("userType")} />
+                <span>Teacher</span>
+              </label>
+              <label className="radio-option">
+                <input type="radio" value="Student" {...register("userType")} />
+                <span>Student</span>
+              </label>
             </div>
           </div>
+
+          {/* Username */}
+          <div className="input-container">
+            <FaUser className="input-icon" />
+            <input
+              type="text"
+              placeholder="Username"
+              className="form-input"
+              {...register("username")}
+            />
+          </div>
+
+          {/* Password */}
+          <div className="input-container">
+            <FaLock className="input-icon" />
+            <input
+              type="password"
+              placeholder="Password"
+              className="form-input"
+              {...register("password")}
+            />
+          </div>
+
+          {/* Email */}
+          <div className="input-container">
+            <FaEnvelope className="input-icon" />
+            <input
+              type="email"
+              placeholder="Email"
+              className="form-input"
+              {...register("email")}
+            />
+          </div>
+
+          <button type="submit" className="signup-btn">Sign Up</button>
+        </form>
+        
+        
+
+        <div className="text-center mt-3">
+          <p>
+            Already have an account?{" "}
+            <Link href="/signin" className="signin-link">
+              Sign In
+            </Link>
+          </p>
         </div>
       </div>
     </div>

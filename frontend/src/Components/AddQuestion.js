@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { BASE_URL } from "../port";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 const AddQuestion = () => {
   const {
     register,
@@ -13,7 +13,12 @@ const AddQuestion = () => {
     reset, // Use reset to update form values programmatically
     setValue, // Use setValue to set default values dynamically
   } = useForm();
-  
+  const { currentuser } = useSelector((state) => state.userLogin);
+  const token = sessionStorage.getItem('token');
+    const axiosWithToken = axios.create({
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
   const [subList, setSubList] = useState([]);
   const [selectedSub, setSelectedSub] = useState([]);
  
@@ -24,30 +29,64 @@ const AddQuestion = () => {
 
   
   const onSubmit = async (data) => {
-    if (!questionEditStatus) {
-      data.imageFile=imageFile
-      data.qs_id = Date.now();
-      data.display_status = true;
-      const res = await axios.post(`${BASE_URL}/admin-api/add-qs`, data);
-    
-      if (res.data.message === "Admin Question Created") {
-        navigate(`/admin-profile/dashboard`,{state:{message:"Question Added"}});
+    if(currentuser.username=='admin'){
+      if (!questionEditStatus) {
+        data.imageFile=imageFile
+        data.qs_id = Date.now();
+        data.display_status = true;
+        const res = await axios.post(`${BASE_URL}/admin-api/add-qs`, data);
+      
+        if (res.data.message === "Admin Question Created") {
+          navigate(`/admin-profile/dashboard`,{state:{message:"Question Added"}});
+        } else {
+          console.log("try again");
+        }
       } else {
-        console.log("try again");
-      }
-    } else {
-      data.imageFile=imageFile
-      data.qs_id=state.qs_id
-      console.log(data);
-      const res = await axios.put(`${BASE_URL}/admin-api/modify-qs`,data);
-     
-      if(res.data.message==='Question updated'){
-        navigate(`/admin-profile/dashboard`,{state:{message:"Question Modified"}})
-      }
-      else{
-        navigate(`/admin-profile/dashboard`,{state:{message:"Couldn't Modify Question"}})
+        data.imageFile=imageFile
+        data.qs_id=state.qs_id
+        console.log(data);
+        const res = await axios.put(`${BASE_URL}/admin-api/modify-qs`,data);
+       
+        if(res.data.message==='Question updated'){
+          navigate(`/admin-profile/dashboard`,{state:{message:"Question Modified"}})
+        }
+        else{
+          navigate(`/admin-profile/dashboard`,{state:{message:"Couldn't Modify Question"}})
+        }
       }
     }
+    else{
+      if(!questionEditStatus){
+        data.imageFile=imageFile
+      data.userType='Teacher'
+        data.qs_id = Date.now().toString()
+        data.display_status = true;
+        data.username= currentuser.username
+        const res = await axios.post(`${BASE_URL}/teacher-api/add-qs`, data);
+        console.log(res);
+        if (res.data.message === "Teacher Question Created") {
+          navigate(`../userdashboard`,{state:{message:"Question Created"}});
+        } else {
+          console.log("try again");
+        }
+      }
+      else{
+        data.imageFile=imageFile
+        data.qs_id=state.qs_id
+        data.userType=state.userType;
+        data.username=state.username
+        console.log(data);
+        const res = await axios.put(`${BASE_URL}/teacher-api/modify-qs/${currentuser.username}/Teacher`, data);
+        console.log(res);
+        if (res.data.message === "Question updated") {
+          navigate(`../test-creation`,{state:{message:"Question Updated"}});
+        } else {
+          console.log("try again");
+        }
+      }
+    }
+    
+    
   };
 
   const handleFileChange = (event) => {
@@ -65,6 +104,7 @@ const AddQuestion = () => {
 
   useEffect(() => {
     const stateVerify = async () => {
+      //console.log(currentuser)
       if (state) {
         setImageFile(state.imageFile)
         setQuestionEditStatus(true);

@@ -1,13 +1,13 @@
-/* Signup.css */
-.signup-container {
+/* Signin.css */
+.signin-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #ff9966, #ff5e62);
+    background: linear-gradient(135deg, #00c9ff, #92fe9d);
   }
   
-  .signup-card {
+  .signin-card {
     background-color: white;
     padding: 40px;
     border-radius: 15px;
@@ -17,14 +17,14 @@
     text-align: center;
   }
   
-  .signup-title {
+  .signin-title {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
     color: #333;
   }
   
-  .error-message {
+  .alert.alert-danger {
     color: red;
     margin-bottom: 10px;
   }
@@ -51,14 +51,14 @@
   }
   
   .form-input:focus {
-    border-color: #ff5e62;
+    border-color: #00c9ff;
     outline: none;
   }
   
-  .signup-btn {
+  .signin-btn {
     width: 100%;
     padding: 12px;
-    background-color: #ff5e62;
+    background-color: #00c9ff;
     color: white;
     font-size: 16px;
     border: none;
@@ -67,18 +67,18 @@
     transition: background-color 0.3s ease;
   }
   
-  .signup-btn:hover {
-    background-color: #ff9966;
+  .signin-btn:hover {
+    background-color: #92fe9d;
   }
   
-  .forgot-password-link, .signin-link {
-    color: #ff5e62;
+  .forgot-password-link, .signup-link {
+    color: #00c9ff;
     text-decoration: none;
     transition: color 0.3s ease;
   }
   
-  .forgot-password-link:hover, .signin-link:hover {
-    color: #ff9966;
+  .forgot-password-link:hover, .signup-link:hover {
+    color: #92fe9d;
   }
   
   .user-type-container {

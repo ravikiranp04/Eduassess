@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { BsPencilSquare, BsEyeSlash } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 function Dashboard() {
   const [err, setErr] = useState("");
   const [subjects, setSubjects] = useState([]);
@@ -22,7 +22,12 @@ function Dashboard() {
   });
   const { state } = useLocation();
   const navigate = useNavigate();
-
+  const token = sessionStorage.getItem('token');
+    const axiosWithToken = axios.create({
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const { currentuser } = useSelector((state) => state.userLogin);
+    const [user,setuser]=useState(0);
   useEffect(() => {
     const stateVerify = async () => {
       if (state && state.message) {
@@ -30,8 +35,12 @@ function Dashboard() {
         setMessageVisible(true);
         setTimeout(() => setMessageVisible(false), 3000); // Hide after 3 seconds
       }
+      console.log("init"+ state.num)
+      if(state.num==1){
+        setuser(1);
+      }
     };
-
+    
     const fetchData = async () => {
       try {
         const subjectsRes = await axios.get(
@@ -42,19 +51,27 @@ function Dashboard() {
         } else {
           setErr(subjectsRes.data.message);
         }
-
-        const questionsRes = await axios.get(`${BASE_URL}/admin-api/prev-qs`);
-        if (questionsRes.data.message === "Previous Questions are") {
-          const questionsWithStatus = questionsRes.data.payload.map(
-            (question) => ({
-              ...question,
-              display_status: true, // Assuming all questions are initially enabled
-            })
-          );
-          setQuestions(questionsWithStatus);
-        } else {
-          setErr(questionsRes.data.message);
+        console.log("user"+user)
+        if(state?.num==1){
+          const questionsRes = await axios.get(`${BASE_URL}/teacher-api/prev-qs/${currentuser.username}`);
+          if (questionsRes.data.message === "Previous Questions are") {
+            
+            setQuestions(questionsRes.data.payload);
+          } else {
+            setErr(questionsRes.data.message);
+          }
         }
+        else{
+          const questionsRes = await axios.get(`${BASE_URL}/admin-api/prev-qs`);
+          if (questionsRes.data.message === "Previous Questions are") {
+          
+              setQuestions(questionsRes.data.payload);
+          } else {
+            setErr(questionsRes.data.message);
+          }
+        }
+        
+        
       } catch (error) {
         console.error("Error fetching data:", error);
         setErr("Error fetching data. Please try again later.");
@@ -122,6 +139,21 @@ function Dashboard() {
       setErr("Error enabling question. Please try again later.");
     }
   };
+  const handleDeleteQuestion = async(question)=>{
+    const confirm = window.confirm("Confirm to Delete")
+    if(confirm){
+      const res= await axiosWithToken.delete(`${BASE_URL}/teacher-api/del-qs/${question.qs_id}`);
+      if(res.data.message==='Question deleted'){
+        setQuestions((prevqs)=>prevqs.filter(qs=>qs.qs_id!=question.qs_id))
+      }
+      else{
+        setMessageStatus(res.data.message);
+        setMessageVisible(true);
+        setTimeout(() => setMessageVisible(false), 3000);
+      }
+    }
+    
+  }
 
   const handleModifyQuestion = (question) => {
     navigate(`/admin-profile/add-question`, { state: question });
@@ -203,7 +235,7 @@ function Dashboard() {
           <p>Option 4: {question.option_4}</p>
           <p>Correct Answer: {question.validity_answer}</p>
           <div className="d-flex justify-content-around">
-            {question.display_status ? (
+            {question.display_status==true && user==0? (
               <Button
                 variant="secondary"
                 className="mr-2 btn btn-danger"
@@ -226,6 +258,15 @@ function Dashboard() {
             >
               Modify <BsPencilSquare className="ml-1" />
             </Button>
+            {
+              user==1 && <Button
+              variant="danger"
+              onClick={() => handleDeleteQuestion(question)}
+            >
+              Delete <BsPencilSquare className="ml-1" />
+            </Button>
+            }
+            
           </div>
         </div>
       ))
@@ -352,4 +393,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Dashboard

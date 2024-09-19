@@ -4,7 +4,7 @@ import {Outlet} from 'react-router-dom'
 import Navbar2 from './Navbar2'
 function Userprofile() {
   return(
-    <div>User Profile
+    <div>
       <Outlet/>
     </div>
     

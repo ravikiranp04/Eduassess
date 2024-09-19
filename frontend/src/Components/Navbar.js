@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ function Navbar() {
   const { currentuser, loginStatus, errorMessage } = useSelector(
     (state) => state.userLogin
   );
+  const [user,setUser]=useState("");
 
   const upgradePack=()=>{
     if(currentuser.userType==='Teacher'){
@@ -28,6 +29,9 @@ function Navbar() {
     dispatch(actionobj);
     navigate("");
   };
+   useEffect(()=>{
+    setUser(currentuser.plan_type);
+   })
 
   return (
     <div className="navbar-container bg-dark text-white">
@@ -86,7 +90,7 @@ function Navbar() {
             <div className="nav">
               <ul className="nav">
                 {(() => {
-                  switch (currentuser.plan_type) {
+                  switch (user) {
                     case 0:
                       return (
                         <button className="btn btn-success me-3" onClick={upgradePack}>Subscribe</button>

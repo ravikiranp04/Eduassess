@@ -88,6 +88,8 @@ teacherApp.put("/upgrade/:username/:plan_type", async (req, res) => {
 //Add questions by teacher
 teacherApp.post('/add-qs',async(req,res)=>{
   const qsObj = req.body;
+  qsObj.qs_id=+('99'+qsObj.qs_id)
+  console.log(qsObj.qs_id)
   await teacherQuestions.insertOne(qsObj);
   res.send({message:"Teacher Question Created"});
 })  
@@ -115,13 +117,32 @@ teacherApp.get('/prev-qs-admin',async(req,res)=>{
   }
 })
 
+//Display tests by teacher username
+teacherApp.get('/display-tests/:uname',async(req,res)=>{
+  const username = req.params.uname;
+  console.log(username)
+  const testobj = await testTeacher.find({$and:[{createdBy:username}]}).toArray();
+  console.log(testobj)
+  if(testobj.length!=0){
+   res.send({message:"The created tests are",payload:testobj})
+  }
+  else{
+   res.send({message:"No tests created"});
+  }
+})
+
 
 //Delete a question created by the teacher
-teacherApp.put('/del-qs/:qs_id',async(req,res)=>{
+teacherApp.delete('/del-qs/:qs_id',async(req,res)=>{
   const qid=(req.params.qs_id);
-  await teacherQuestions.deleteOne({qs_id:qid});
-  
-  res.send({message:"Question deleted"})
+  const x =await teacherQuestions.deleteOne({qs_id:qid});
+  if(x){
+    res.send({message:"Question deleted"})
+  }
+  else{
+    res.send({message:"Cant delete Question"})
+  }
+ 
  
 })
 
@@ -137,6 +158,25 @@ teacherApp.put('/modify-qs/:s_uname/:type',subscriptionVerify,async(req,res)=>{
   else{
 
     res.send({message:"Question updated"});
+  }
+
+})
+
+//Modifying a test
+teacherApp.put('/modify-test/:s_uname/:type',subscriptionVerify,async(req,res)=>{
+  const testobj=req.body;
+  const cby = req.params.s_uname
+  console.log(testobj)
+  console.log(cby)
+  //console.log(qsobj)
+  const updated=await testTeacher.findOneAndUpdate({$and:[{testid:testobj.testid},{createdBy:cby}]},{$set:{...testobj}},{returnOriginal:false})
+  console.log(updated)
+  if(!updated){
+    res.send({message:"Test not updated"});
+  }
+  else{
+
+    res.send({message:"Test updated"});
   }
 
 })
@@ -199,6 +239,19 @@ teacherApp.put('/wrong/:uname/:testid/:marks',async(req,res)=>{
   }
   else{
     res.send({message:"Marking Scheme Changed"});
+  }
+})
+
+//Deleet test
+teacherApp.delete('/del-test/:id',async(req,res)=>{
+  const iid = +(req.params.id);
+  console.log(iid)
+  const updt = await testTeacher.deleteOne({testid:iid});
+  if(updt){
+    res.send({message:"Test Deleted"});
+  }
+  else{
+    res.send({message:"Cant delete test"})
   }
 })
 

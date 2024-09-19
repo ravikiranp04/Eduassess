@@ -6,7 +6,6 @@ function Teacherprofile() {
  
   return (
     <div >
-   
     <Outlet/>
 </div>
   )

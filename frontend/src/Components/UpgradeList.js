@@ -9,35 +9,50 @@ function UpgradeList() {
   const { currentuser, loginStatus } = useSelector((state) => state.userLogin);
   const token = sessionStorage.getItem('token');
   const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false); // Disable button while loading
   const navigate = useNavigate();
   const { username } = useParams();
 
+  // Axios instance with baseURL and token
   const axiosWithToken = axios.create({
+    baseURL: BASE_URL,
     headers: { Authorization: `Bearer ${token}` },
   });
 
   const subscribe = async (ptype) => {
+    if (!token || !currentuser) {
+      setErr('User not logged in or session expired.');
+      return;
+    }
+
+    setLoading(true); // Disable button
+
     try {
       let res;
       if (currentuser.userType === 'Teacher') {
         res = await axiosWithToken.put(
-          `${BASE_URL}/teacher-api/upgrade/${currentuser.username}/${ptype}`
+          `/teacher-api/upgrade/${currentuser.username}/${ptype}`
         );
       } else if (currentuser.userType === 'Student') {
         res = await axiosWithToken.put(
-          `${BASE_URL}/student-api/upgrade/${currentuser.username}/${ptype}`
+          `/student-api/upgrade/${currentuser.username}/${ptype}`
         );
       }
 
       if (res.data.message === 'Subscription Successful') {
-        navigate(`../dashboard`);
+        const redirectPath = currentuser.userType === 'Teacher'
+          ? `/teacher-profile/${currentuser.username}/userdashboard`
+          : `/student-profile/${currentuser.username}/studentdashboard`;
+
+        navigate(redirectPath, { state: { message: res.data.message } });
       } else {
         setErr(res.data.message);
-        console.error(res.data.message);
       }
     } catch (error) {
-      setErr("An error occurred during subscription.");
+      setErr('An error occurred during subscription.');
       console.error(error);
+    } finally {
+      setLoading(false); // Re-enable button after loading
     }
   };
 
@@ -75,9 +90,9 @@ function UpgradeList() {
         {plans.map((plan, index) => (
           <div key={index} className="col-12 col-md-6 col-lg-4 mb-4">
             <div
-              className="card rounded-5 bg-primary text-light text-center h-100"
-              onClick={() => subscribe(plan.plantype)}
-              style={{ cursor: 'pointer' }}
+              className={`card rounded-5 bg-primary text-light text-center h-100 ${loading ? 'disabled' : ''}`}
+              onClick={() => !loading && subscribe(plan.plantype)} // Prevent multiple clicks
+              style={{ cursor: loading ? 'not-allowed' : 'pointer' }} // Change cursor when loading
             >
               <Upgrade planobj={plan} />
             </div>

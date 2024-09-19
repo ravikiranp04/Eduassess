@@ -1,108 +1,207 @@
 .quiz-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  .quiz-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .quiz-main {
-    display: flex;
-    width: 100%;
-  }
-  
-  .question-section {
-    flex: 3;
-    padding: 20px;
-  }
-  
-  .question-text {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-  }
-  
-  .options {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .option-button {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .option-button.selected {
-    background-color: green;
-    color: white;
-  }
-  
-  .navigation-buttons {
-    margin-top: 20px;
-  }
-  
-  .save-next-button, .next-button {
-    padding: 10px 20px;
-    margin-right: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .quiz-sidebar {
-    flex: 1;
-    padding: 20px;
-    border-left: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .user-photo img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-  }
-  
-  .question-status {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .status-button {
-    width: 40px;
-    height: 40px;
-    margin: 5px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  .status-button.selected {
-    background-color: green;
-    color: white;
-  }
-  
-  .status-button.not-selected {
-    background-color: red;
-    color: white;
-  }
-  
-  .status-button.not-visited {
-    background-color: rgb(101, 41, 240);
-    color: white;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+}
+
+.quiz-main {
+  display: flex;
+  justify-content: space-between; /* Ensure proper spacing between question and sidebar */
+  width: 100%;
+}
+
+.question-section {
+  flex: 3;
+  padding: 20px;
+}
+
+.question-text {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+}
+
+.option-button {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.option-button:hover {
+  background-color: #e0e0e0; /* Light gray on hover for better visibility */
+}
+
+.option-button.selected {
+  background-color: green;
+  color: white;
+}
+
+.navigation-buttons {
+  margin-top: 20px;
+}
+
+.save-next-button, .next-button, .back-button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.save-next-button:hover, .next-button:hover, .back-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.quiz-sidebar {
+  flex: 1;
+  padding: 20px;
+  border-left: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-photo img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.question-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Ensure buttons are centered in the sidebar */
+}
+
+.status-button {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 10px; /* Increased padding for better clickability */
+  margin: 5px; /* More margin for spacing */
+  background-color: #f0f0f0; /* Default color */
+  color: #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.status-button:hover {
+  background-color: #d0d0d0; /* Light hover effect on status buttons */
+}
+
+.status-button.not-visited {
+  background-color: gray;
+}
+
+.status-button.visited {
+  background-color: yellow;
+}
+
+.status-button.selected {
+  background-color: green;
+}
+
+.status-button.marked {
+  background-color: purple;
+}
+
+.color-legend {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.legend-box {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+}
+
+.legend-box.not-visited {
+  background-color: gray;
+}
+
+.legend-box.visited {
+  background-color: yellow;
+}
+
+.legend-box.selected {
+  background-color: green;
+}
+
+.legend-box.marked {
+  background-color: purple;
+}
+/* Add to your existing Test.css file */
+
+.terms-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 60%;
+  padding: 20px;
+  z-index: 999;
+  text-align: center;
+}
+
+.terms-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.terms-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.terms-content {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.terms-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.terms-button:hover {
+  background-color: #218838;
+}
+

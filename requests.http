@@ -175,7 +175,7 @@ GET http://localhost:8000/teacher-api/prev-qs/ravi_04
 GET http://localhost:8000/teacher-api/prev-qs-admin
 
 ###Teacher deleting his own previous question
-PUT http://localhost:8000/teacher-api/del-qs/1715698915
+Delete http://localhost:8000/teacher-api/del-qs/1715698915
 
 ### Teacher Modifying his previous question
 PUT http://localhost:8000/teacher-api/modify-qs/ravi_04/Teacher
@@ -207,8 +207,68 @@ POST http://localhost:8000/teacher-api/create-test/ravi_04/Teacher
 Content-Type: application/json
 
 {
-    "testid":1600,
+    "testid":1700,
     "createdBy":"ravi_04",
+    "title":"My test",
+    "Description":"First test",
+    "start_time":"",
+    "end_time":"",
+    "duration":"",
+    "questions":[
+        {
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"4546",
+    "sub_type":"",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+},
+{
+    "userType":"Teacher",
+    "username":"ravi_04",
+    "subject":"",
+    "qs_id":"455",
+    "sub_type":"",
+    "question":"",
+    "option_1":"",
+    "option_2":"",
+    "option_3":"",
+    "option_4":"",
+    "answer":0,
+    "difficulty":0,
+    "validity_answer":0,
+    "correct_value":0,
+    "wrong_answer":0,
+    "attempt_status":false,
+    "display_status":true
+}
+    ],
+    "students_attempted":[],
+    "validity":false,
+    "total_marks":0,
+    "marks_scored":0
+}
+
+###Modify a test
+PUT http://localhost:8000/teacher-api/modify-test/ravi_04/Teacher
+Content-Type: application/json
+
+{
+    "testid":1700,
+    "createdBy":"ravi_04",
+    "title":"My test",
+    "Description":"First test",
     "start_time":"",
     "end_time":"",
     "duration":"",
@@ -272,7 +332,12 @@ PUT http://localhost:8000/teacher-api/activate/ravi_04/1100/ravi_04/Teacher
 ### Deactivate the test
 PUT http://localhost:8000/teacher-api/deactivate/ravi_04/1100
 
+###Dispaly of tests created by teacher username
+get http://localhost:8000/teacher-api/display-tests/ravi_04
 
+
+###delete a test
+DELETE http://localhost:8000/teacher-api/del-test/1600
 
 //---------------Student Operations-------------------------------
 
@@ -294,11 +359,14 @@ Content-Type: application/json
 {
     "userType":"Student",
     "username":"shiva_04",
-    "password":"shiva_04"
+    "password":"shiva2004"
 }
 
 ###Student Plan Upgrade
 PUT http://localhost:8000/student-api/upgrade/shiva_04/6
+
+###Get all usernames of teachers
+get http://localhost:8000/student-api/get-teachers
 
 
 ###Dispaly of tests created by teacher username

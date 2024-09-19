@@ -5,7 +5,7 @@ import Home from './Components/Home';
 import Teacherprofile from './Components/Teacherprofile';
 import TestCreation from './Components/TestCreation';
 import Userprofile from './Components/Userprofile';
-import Test from './Components/Test';
+import Test from './Components/TestAttempt';
 import TestDetails from './Components/TestDetails';
 import Signin from './Components/Signin';
 import Rootlayout from './Components/Rootlayout';
@@ -18,6 +18,9 @@ import Dashboard from './Components/Dashboard';
 import AddQuestion from './Components/AddQuestion';
 import AddSubject from './Components/AddSubject';
 import AdminSubjects from './Components/AdminSubjects';
+import UserDashboard from './Components/UserDashboard';
+import StudentDashboard from './Components/StudentDashboard';
+import TestAttempt from './Components/TestAttempt';
 function App() {
   const browserRouter = createBrowserRouter([
     {
@@ -45,16 +48,20 @@ function App() {
           element:<Userprofile/>,
           children:[
             {
-              path:'dashboard',
-              element:<Dashboard/>
+              path:'studentdashboard',
+              element:<StudentDashboard/>
             },
             {
               path:'upgrade',
               element:<UpgradeList/>
             },
             {
+              path:'test-attempt',
+              element:<TestAttempt/>
+            },
+            {
               path:'',
-              element:<Navigate to='dashboard'/>
+              element:<Navigate to='studentdashboard'/>
             }
           ]
         },
@@ -63,16 +70,32 @@ function App() {
           element:<Teacherprofile/>,
           children:[
             {
-              path:'dashboard',
-              element:<Dashboard/>
+              path:'userdashboard',
+              element:<UserDashboard/>
             },
             {
               path:'upgrade',
               element:<UpgradeList/>
             },
             {
+              path:'test-creation',
+              element:<TestCreation/>
+            },
+            {
+              path:'test-modify',
+              element:<TestCreation/>
+            },
+            {
+              path:'add-question',
+              element:<AddQuestion/>
+            },
+            {
+              path:'questions',
+              element:<Dashboard/>
+            },
+            {
               path:'',
-              element:<Navigate to='dashboard'/>
+              element:<Navigate to='userdashboard'/>
             }
           ]
         },
@@ -84,7 +107,6 @@ function App() {
               path:'dashboard',
               element:<Dashboard/>
             },
-            
             {
               path:'',
               element:<Navigate to='dashboard'/>

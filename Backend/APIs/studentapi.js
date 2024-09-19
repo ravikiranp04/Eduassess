@@ -3,7 +3,8 @@ const studentApp = exp.Router();
 const schedule = require('node-schedule');
 const expresshandler = require("express-async-handler");
 const { createStudentorTeacher,loginStudentorTeacher } = require("./Util");
-const {subscriptionVerify}= require('../Middlewares/subscriptionVerify')
+const {subscriptionVerify}= require('../Middlewares/subscriptionVerify');
+const { toNamespacedPath } = require("path");
 //body parser
 studentApp.use(exp.json());
 
@@ -98,10 +99,12 @@ studentApp.put("/upgrade/:username/:plan_type", async (req, res) => {
  
 });
 //------------------------------------------------------------------------------------------------------------------------------------
- //Display tests by teacher username
+//Display tests by teacher username
 studentApp.get('/display-tests/:uname',async(req,res)=>{
    const username = req.params.uname;
+   console.log(username)
    const testobj = await testTeacher.find({$and:[{createdBy:username},{validity:true}]}).toArray();
+   console.log(testobj)
    if(testobj.length!=0){
     res.send({message:"The created tests are",payload:testobj})
    }
@@ -179,8 +182,8 @@ studentApp.post('/end-test',async(req,res)=>{
   teacher={}
   teacher.username=endObj.username;
   teacher.start_time=endObj.start_time;
-  teacher.end_time=endObj.end_time;
-  teacher.duration=endObj.duration;
+  teacher.time_taken=endObj.time_taken;
+  teacher.test_startdate=endObj.test_startdate;
   teacher.total_marks=endObj.total_marks
   teacher.marks_scored=endObj.marks_scored;
   console.log(teacher)
@@ -216,6 +219,15 @@ studentApp.get('/display-prev-tests/:uname',async(req,res)=>{
   else{
     res.send({message:"No tests found"});
   }
+})
+
+
+//Get teacher usernames
+studentApp.get('/get-teachers',async(req,res)=>{
+  const teachers = await teacherCollection.find({}, { projection: { username: 1 } }).toArray();
+
+    const usernames = teachers.map(teacher => teacher.username);
+    res.send({message:"usernames are",payload:usernames})
 })
 //export app
 module.exports = studentApp;
