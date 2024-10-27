@@ -1,11 +1,404 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.rootlayout{
-    background-image:linear-gradient(to right,rgba(179, 126, 243, 0.5), rgba(245, 146, 223, 0.5)), url('../screenshots/Screenshot\ 2024-05-27\ 112919.png');
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4; /* Soft background color */
+    color: #003566; /* Consistent deep blue for text */
+    overflow-x: hidden; /* Disable horizontal scrolling */
+}
+
+/* Header Styling */
+.logo {
+    display: flex;
+}
+
+.logo p {
+    margin-left: 8px;
+    margin-top: 8px;
+    font-size: 18px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #001d3d; /* Keep header background */
+    color: white;
+    padding: 10px 20px;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.nav #about:hover {
+    text-underline-position: below;
+}
+
+.nav button {
+    padding: 10px 20px;
+    background-color: #ffc300; /* Keep button color */
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav button:hover {
+    background-color: #ffc300;
+    transform: scale(1.1);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 50px 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    background-color: #003566; /* Deep blue for better contrast */
+    color: white; /* Changed to white for better readability */
+    animation: fadeIn 2s ease-in-out;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.cta-buttons a {
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #ffc300; /* Keep button color */
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.cta-buttons a:hover {
+    background-color: #ffc300;
+    transform: scale(1.1);
+}
+
+/* How It Works Section */
+.how-it-works {
+    padding: 50px;
+    background-color: #fff; /* Light background */
+    color: #003566; /* Deep blue text */
+}
+
+.how-it-works h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+}
+
+.step {
+    width: 30%;
+    text-align: center;
+}
+
+.step img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    animation: bounce 1s infinite;
+}
+
+.step h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.step p {
+    font-size: 16px;
+}
+
+/* Popular Quiz Progress Bar */
+.popular-quiz {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 80%;
+    background-color: #003566; /* Dark blue background for the progress bar */
+    margin: 20px auto;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress {
+    background-color: #ffc300; /* Keep progress bar color */
+    width: 0%;
+    height: 100%;
+    animation: progressAnimation 5s ease-in-out forwards;
+}
+
+/* Parallax Section */
+.parallax {
+    height: 500px;
+    position: relative;
+    background-attachment: fixed;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.parallax-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Transparent background for readability */
+    border-radius: 10px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.parallax h2 {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.parallax p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.parallax .cta-button {
+    background-color: #ffc300; /* Keep button color */
+    color: white;
+    padding: 15px 30px;
+    font-size: 18px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.parallax .cta-button:hover {
+    background-color: #ffc300;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #001d3d; /* Keep footer background */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+}
+
+.footer p {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.footer a {
+    color: #ffc300; /* Keep footer links color */
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Search Section Styling */
+.search-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.search-section input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+.search-section button {
+    padding: 10px 20px;
+    background-color: #ffc300; /* Keep button color */
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-section button:hover {
+    background-color: #ffc300;
+}
+
+/* Countdown Timer Section */
+.countdown {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.countdown h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: white; /* Consistent text color */
+}
+
+#countdown-timer {
+    display: flex;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: bold;
+    color: #ffc300; /* Countdown text */
+}
+
+.timer-box {
+    background-color: #003566; /* Dark blue for timer boxes */
+    color: white;
+    padding: 20px;
+    margin: 0 10px;
+    border-radius: 10px;
+    display: inline-block;
+    position: relative;
+}
+
+.timer-box span {
+    display: block;
+    font-size: 2rem;
+}
+
+/* Styling for Countdown Labels */
+.countdown-labels {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.countdown-label {
+    margin: 0 15px;
+    font-size: 18px;
+    color: #555;
+}
+
+/* Quizzone Heading Styling */
+.quizzone-heading {
+    font-size: 18px;           /* Larger font size */
+    font-weight: bold;         /* Bold text */
+    color: #ffc300;            /* Bright yellow color to match buttons */
+    text-shadow: 2px 2px 5px rgba(228, 234, 236, 0.5); /* Shadow for a 3D effect */
+    letter-spacing: 2px;       /* Space between letters */     /* Space below heading */
+    animation: fadeIn 1.5s ease-in-out; /* Fade-in effect */
+    text-align: center;  
+    margin-left: 8px;
+    margin-top: 8px;
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Welcome to Quizzone Styling */
+.welcome-heading {
+    font-size: 40px;           /* Slightly smaller than main heading */
+    font-weight: normal;       /* Regular weight to contrast the bold Quizzone */
+    color:  #ffc300;            /* Dark blue color to contrast with yellow */
+    text-transform: capitalize; /* Capitalizes first letters */
+    letter-spacing: 1px;       /* Small letter spacing */
+    margin-top: 10px;          /* Space above the text */
+    margin-bottom: 20px;       /* Space below the text */
+    text-align: center;        /* Center the text */
+    animation: fadeInUp 3s ease-in-out; /* Smooth fade-up animation */
+}
+
+/* Fade-In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* Starts slightly lower */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);    /* Ends at original position */
+    }
+}
+
+/* Styling for the Why Choose EduAssess Box */
+.features {
+    background-color: #f0f0f0; /* Light gray background */
+    border: 2px solid #003566; /* Dark blue border */
+    padding: 20px;             /* Space inside the box */
+    margin: 50px auto;         /* Center the box with some space above/below */
+    max-width: 800px;          /* Limit the width of the box */
+    border-radius: 10px;       /* Rounded corners for the box */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: center;
+}
+
+.features h2 {
+    font-size: 32px;
+    color: #003566; /* Deep blue color */
+    margin-bottom: 20px;
+}
+
+.feature-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.feature-item {
+    width: 30%;
+    text-align: center;
+}
+
+.feature-item h3 {
+    color: #ffc300; /* Bright yellow color */
+    margin-bottom: 10px;
+}
+
+.feature-item p {
+    font-size: 16px;
+    color: #333;
 }

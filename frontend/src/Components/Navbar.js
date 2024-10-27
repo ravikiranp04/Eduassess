@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetState } from "../Redux/slices/userLoginSlice";
-
+import vnrLogo from './images/vnr logo.jpg';
 function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,7 +20,6 @@ function Navbar() {
       navigate(`/student-profile/${currentuser.username}/upgrade`)
     }
   }
-
   const logout = () => {
     // Remove token from browser storage
     sessionStorage.removeItem("token");
@@ -37,16 +36,17 @@ function Navbar() {
     <div className="navbar-container bg-dark text-white">
       {loginStatus === false ? (
         <div className="d-flex align-items-center justify-content-between p-3">
-          <div className="d-flex align-items-center">
-            <img
-              src="https://images.shiksha.com/mediadata/images/1687888767php162Hce.jpeg"
-              alt="this image is not available"
-              style={{ height: "40px", width: "40px" }}
-              className="rounded-circle me-3"
-            />
-          </div>
+           <div className="logo">
+          <img src={vnrLogo} alt="vnr Logo" />
+          <h1 className="quizzone-heading">EduAssess</h1>
+        </div>
           <div className="nav">
             <ul className="nav">
+            <li className="nav-item">
+                <Link className="nav-link text-white" to="/home">
+                  Home
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link className="nav-link text-white" to="/aboutus">
                   About us
@@ -80,6 +80,11 @@ function Navbar() {
           </div>
           {currentuser.userType === 'Teacher' && currentuser.username === 'admin' ? (
             <ul className="nav">
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/home">
+                  Home
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link className="nav-link text-white" to="" onClick={logout}>
                   Logout
@@ -118,6 +123,11 @@ function Navbar() {
                       return null;
                   }
                 })()}
+                 <li className="nav-item">
+                <Link className="nav-link text-white" to="/home">
+                  Home
+                </Link>
+              </li>
                 <li className="nav-item">
                   <Link className="nav-link text-white" to="/aboutus">
                     About us

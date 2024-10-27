@@ -8,7 +8,6 @@ function Rootlayout() {
     <div>
         <Navbar/>
         <div style={{minHeight:"100vh"}} ><Outlet/></div>
-        <Footer/>
     </div>
   )
 }

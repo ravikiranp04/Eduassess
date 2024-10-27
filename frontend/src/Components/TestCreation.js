@@ -486,7 +486,7 @@ function TestCreation() {
     </Button>
   }
 
-    {User==1 && !testEditStatus && <button className="btn btn-success" onClick={()=>{navigate("../test-creation")}}>Create A Test</button>}
+    {User==1 && !testEditStatus && <button className="btn btn-success" onClick={()=>{navigate("../add-question")}}>Create A Question</button>}
   </div>
 
   

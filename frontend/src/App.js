@@ -32,6 +32,10 @@ function App() {
           element: <Home />,
         },
         {
+          path:'/home',
+          element:<Home/>
+        },
+        {
           path: '/signin',
           element: <Signin />,
         },

@@ -66,31 +66,43 @@ function TestAttempt() {
 
   const handleSaveAndNextClick = () => {
     setVisitedQuestions(prev => [...new Set([...prev, currentQuestion])]);
+    setSelectedOptions(prev => ({
+      ...prev,
+      [currentQuestion]: selectedOptions[currentQuestion] !== undefined ? selectedOptions[currentQuestion] : null // Ensure it stays selected if already selected
+    }));
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
     }
   };
-
+  
   const handleMarkForReview = () => {
     setMarkedQuestions(prev => {
       const updatedMarks = [...prev];
       if (updatedMarks.includes(currentQuestion)) {
-        return updatedMarks.filter(q => q !== currentQuestion);
+        return updatedMarks.filter(q => q !== currentQuestion);  // Unmark if already marked
       } else {
-        return [...updatedMarks, currentQuestion];
+        return [...updatedMarks, currentQuestion];  // Mark for review
       }
     });
+  
+    // Ensure the question remains visited and selected state is preserved (if any)
+    setVisitedQuestions(prev => [...new Set([...prev, currentQuestion])]);
+    
+    // You don't need to modify selectedOptions when marking for review if no option is selected
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
     }
   };
-
+  
+  
   const handleClearClick = () => {
+    // Do not remove from visited questions
     setSelectedOptions(prev => ({
       ...prev,
-      [currentQuestion]: null
+      [currentQuestion]: null // Just clear the selection
     }));
   };
+  
 
   const handleSubmit = async () => {
     let correctAnswers = 0;
