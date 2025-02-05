@@ -16,7 +16,7 @@
 
 .quiz-main {
   display: flex;
-  justify-content: space-between; /* Ensure proper spacing between question and sidebar */
+  justify-content: space-between; 
   width: 100%;
 }
 
@@ -41,11 +41,11 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition for hover */
+  transition: background-color 0.3s ease; 
 }
 
 .option-button:hover {
-  background-color: #e0e0e0; /* Light gray on hover for better visibility */
+  background-color: #e0e0e0; 
 }
 
 .option-button.selected {
@@ -65,11 +65,11 @@
   cursor: pointer;
   background-color: #007bff;
   color: white;
-  transition: background-color 0.3s ease; /* Smooth hover effect */
+  transition: background-color 0.3s ease; 
 }
 
 .save-next-button:hover, .next-button:hover, .back-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3; 
 }
 
 .quiz-sidebar {
@@ -91,22 +91,22 @@
 .question-status {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Ensure buttons are centered in the sidebar */
+  justify-content: center; 
 }
 
 .status-button {
   border: 1px solid #ccc;
   border-radius: 50%;
-  padding: 10px; /* Increased padding for better clickability */
-  margin: 5px; /* More margin for spacing */
-  background-color: #f0f0f0; /* Default color */
+  padding: 10px; 
+  margin: 5px; 
+  background-color: #f0f0f0; 
   color: #000;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth color transition */
+  transition: background-color 0.3s ease; 
 }
 
 .status-button:hover {
-  background-color: #d0d0d0; /* Light hover effect on status buttons */
+  background-color: #d0d0d0; 
 }
 
 .status-button.not-visited {

@@ -1,9 +1,7 @@
-/* Styling for the sidebar */
 .bg-light {
   background-color: #f8f9fa !important;
 }
 
-/* Styling for subject and subtype lists */
 .subject-list, .subtype-list {
   border-radius: 8px;
   padding: 10px;

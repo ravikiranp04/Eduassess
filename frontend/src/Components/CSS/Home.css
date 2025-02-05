@@ -7,9 +7,9 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f4f4f4; /* Soft background color */
-    color: #003566; /* Consistent deep blue for text */
-    overflow-x: hidden; /* Disable horizontal scrolling */
+    background-color: #f4f4f4; 
+    color: #003566; 
+    overflow-x: hidden; 
 }
 
 /* Header Styling */
@@ -27,7 +27,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #001d3d; /* Keep header background */
+    background-color: #001d3d; 
     color: white;
     padding: 10px 20px;
 }
@@ -48,7 +48,7 @@ body {
 
 .nav button {
     padding: 10px 20px;
-    background-color: #ffc300; /* Keep button color */
+    background-color: #ffc300; 
     border: none;
     color: white;
     font-size: 16px;
@@ -66,8 +66,8 @@ body {
     text-align: center;
     padding: 50px 0;
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-    background-color: #003566; /* Deep blue for better contrast */
-    color: white; /* Changed to white for better readability */
+    background-color: #003566; 
+    color: white; 
     animation: fadeIn 2s ease-in-out;
 }
 
@@ -85,7 +85,7 @@ body {
     text-decoration: none;
     padding: 10px 20px;
     margin: 10px;
-    background-color: #ffc300; /* Keep button color */
+    background-color: #ffc300; 
     color: white;
     border-radius: 5px;
     font-size: 18px;
@@ -101,8 +101,8 @@ body {
 /* How It Works Section */
 .how-it-works {
     padding: 50px;
-    background-color: #fff; /* Light background */
-    color: #003566; /* Deep blue text */
+    background-color: #fff;
+    color: #003566; 
 }
 
 .how-it-works h2 {
@@ -144,7 +144,7 @@ body {
 
 .progress-bar {
     width: 80%;
-    background-color: #003566; /* Dark blue background for the progress bar */
+    background-color: #003566; 
     margin: 20px auto;
     height: 20px;
     border-radius: 10px;
@@ -152,7 +152,7 @@ body {
 }
 
 .progress {
-    background-color: #ffc300; /* Keep progress bar color */
+    background-color: #ffc300; 
     width: 0%;
     height: 100%;
     animation: progressAnimation 5s ease-in-out forwards;
@@ -179,7 +179,7 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.5); /* Transparent background for readability */
+    background: rgba(0, 0, 0, 0.5); 
     border-radius: 10px;
     animation: fadeIn 2s ease-in-out;
 }
@@ -198,7 +198,7 @@ body {
 }
 
 .parallax .cta-button {
-    background-color: #ffc300; /* Keep button color */
+    background-color: #ffc300; 
     color: white;
     padding: 15px 30px;
     font-size: 18px;
@@ -227,7 +227,7 @@ body {
 }
 
 .footer a {
-    color: #ffc300; /* Keep footer links color */
+    color: #ffc300; 
     text-decoration: none;
     margin: 0 10px;
 }
@@ -255,7 +255,7 @@ body {
 
 .search-section button {
     padding: 10px 20px;
-    background-color: #ffc300; /* Keep button color */
+    background-color: #ffc300; 
     border: none;
     color: white;
     font-size: 16px;
@@ -277,7 +277,7 @@ body {
 .countdown h2 {
     font-size: 36px;
     margin-bottom: 20px;
-    color: white; /* Consistent text color */
+    color: white; 
 }
 
 #countdown-timer {
@@ -285,11 +285,11 @@ body {
     justify-content: center;
     font-size: 48px;
     font-weight: bold;
-    color: #ffc300; /* Countdown text */
+    color: #ffc300; 
 }
 
 .timer-box {
-    background-color: #003566; /* Dark blue for timer boxes */
+    background-color: #003566;
     color: white;
     padding: 20px;
     margin: 0 10px;
@@ -318,18 +318,18 @@ body {
 
 /* Quizzone Heading Styling */
 .quizzone-heading {
-    font-size: 18px;           /* Larger font size */
-    font-weight: bold;         /* Bold text */
-    color: #ffc300;            /* Bright yellow color to match buttons */
-    text-shadow: 2px 2px 5px rgba(228, 234, 236, 0.5); /* Shadow for a 3D effect */
-    letter-spacing: 2px;       /* Space between letters */     /* Space below heading */
-    animation: fadeIn 1.5s ease-in-out; /* Fade-in effect */
+    font-size: 18px;           
+    font-weight: bold;         
+    color: #ffc300;            
+    text-shadow: 2px 2px 5px rgba(228, 234, 236, 0.5);
+    letter-spacing: 2px;       
+    animation: fadeIn 1.5s ease-in-out;
     text-align: center;  
     margin-left: 8px;
     margin-top: 8px;
 }
 
-/* Fade-In Animation */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -339,46 +339,46 @@ body {
     }
 }
 
-/* Welcome to Quizzone Styling */
+
 .welcome-heading {
-    font-size: 40px;           /* Slightly smaller than main heading */
-    font-weight: normal;       /* Regular weight to contrast the bold Quizzone */
-    color:  #ffc300;            /* Dark blue color to contrast with yellow */
-    text-transform: capitalize; /* Capitalizes first letters */
-    letter-spacing: 1px;       /* Small letter spacing */
-    margin-top: 10px;          /* Space above the text */
-    margin-bottom: 20px;       /* Space below the text */
-    text-align: center;        /* Center the text */
-    animation: fadeInUp 3s ease-in-out; /* Smooth fade-up animation */
+    font-size: 40px;           
+    font-weight: normal;       
+    color:  #ffc300;          
+    text-transform: capitalize; 
+    letter-spacing: 1px;       
+    margin-top: 10px;          
+    margin-bottom: 20px;       
+    text-align: center;        
+    animation: fadeInUp 3s ease-in-out; 
 }
 
 /* Fade-In Up Animation */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px); /* Starts slightly lower */
+        transform: translateY(20px); 
     }
     to {
         opacity: 1;
-        transform: translateY(0);    /* Ends at original position */
+        transform: translateY(0);    
     }
 }
 
-/* Styling for the Why Choose EduAssess Box */
+
 .features {
-    background-color: #f0f0f0; /* Light gray background */
-    border: 2px solid #003566; /* Dark blue border */
-    padding: 20px;             /* Space inside the box */
-    margin: 50px auto;         /* Center the box with some space above/below */
-    max-width: 800px;          /* Limit the width of the box */
-    border-radius: 10px;       /* Rounded corners for the box */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: #f0f0f0; 
+    border: 2px solid #003566; 
+    padding: 20px;             
+    margin: 50px auto;         
+    max-width: 800px;          
+    border-radius: 10px;       
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
     text-align: center;
 }
 
 .features h2 {
     font-size: 32px;
-    color: #003566; /* Deep blue color */
+    color: #003566;
     margin-bottom: 20px;
 }
 
@@ -394,7 +394,7 @@ body {
 }
 
 .feature-item h3 {
-    color: #ffc300; /* Bright yellow color */
+    color: #ffc300; 
     margin-bottom: 10px;
 }
 
