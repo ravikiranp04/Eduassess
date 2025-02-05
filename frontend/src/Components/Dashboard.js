@@ -33,7 +33,7 @@ function Dashboard() {
       if (state && state.message) {
         setMessageStatus(state.message);
         setMessageVisible(true);
-        setTimeout(() => setMessageVisible(false), 3000); // Hide after 3 seconds
+        setTimeout(() => setMessageVisible(false), 3000); 
       }
       console.log("init"+ state.num)
       if(state.num==1){

@@ -10,8 +10,8 @@ const AddQuestion = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset, // Use reset to update form values programmatically
-    setValue, // Use setValue to set default values dynamically
+    reset, 
+    setValue, 
   } = useForm();
   const { currentuser } = useSelector((state) => state.userLogin);
   const token = sessionStorage.getItem('token');
@@ -143,14 +143,14 @@ const AddQuestion = () => {
 
     getSubList();
     stateVerify();
-  }, [state, setValue, reset]); // Include dependencies to re-run effects as needed
+  }, [state, setValue, reset]); 
 
   const handleSubjectChange = (e) => {
     const selectedSubject = subList.find(
       (sub) => sub.subject === e.target.value
     );
     setSelectedSub(selectedSubject ? selectedSubject.subtypes : []);
-    setValue("sub_type", ""); // Clear sub_type value when subject changes
+    setValue("sub_type", ""); 
   };
 
   const handleRemoveImage = ()=>{
@@ -332,7 +332,7 @@ const AddQuestion = () => {
             className="form-select"
             {...register("subject", { required: true })}
             onChange={handleSubjectChange}
-            defaultValue={state.subject} // Set default value for edit mode
+            defaultValue={state.subject} 
           >
             <option value="">Select...</option>
             {subList.map((sub, index) => (
@@ -351,7 +351,7 @@ const AddQuestion = () => {
           <select
             className="form-select"
             {...register("sub_type", { required: true })}
-            defaultValue={state.sub_type} // Set default value for edit mode
+            defaultValue={state.sub_type} 
           >
             <option value="">Select...</option>
             {selectedSub.map((subtp, index) => (

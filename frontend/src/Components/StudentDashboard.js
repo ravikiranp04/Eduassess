@@ -23,6 +23,7 @@ function StudentDashboard() {
   const [TC,setTC]=useState(false)
   const [messageStatus, setMessageStatus] = useState("");
   const [messageVisible, setMessageVisible] = useState(false);
+  
   useEffect(()=>{
     const stateVerify=()=>{
       if(state && state.message){
@@ -55,9 +56,13 @@ function StudentDashboard() {
     setTimeout(async() => {
         //fetching tests by that teacher
       const res = await axiosWithToken.get(`${BASE_URL}/student-api/display-tests/${teacherUsername}`)
+      console.log(res)
       if(res.data.message==='The created tests are'){
         setTests(res.data.payload); // Replace this with actual API call
       
+      }
+      else if(res.data.message==="No tests created"){
+        setTests([])
       }
       setIsLoading(false);
       
@@ -80,11 +85,11 @@ function StudentDashboard() {
   const handleUsernameSelect = (username) => {
     setTeacherUsername(username);
     setFilteredUsernames([]);
-    handleSearch(username); // Trigger search when a username is selected
+    handleSearch(username); 
   };
 
   const handleTakeTest = async (test) => {
-    // Handle the "Take Test" action here
+    
     
     console.log(test)
     const res = await axiosWithToken.get(`${BASE_URL}/student-api/start-test/${currentuser.username}/${test.createdBy}/${test.testid}/${currentuser.username}/Student`)

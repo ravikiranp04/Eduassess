@@ -9,11 +9,10 @@ function UpgradeList() {
   const { currentuser, loginStatus } = useSelector((state) => state.userLogin);
   const token = sessionStorage.getItem('token');
   const [err, setErr] = useState("");
-  const [loading, setLoading] = useState(false); // Disable button while loading
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
   const { username } = useParams();
 
-  // Axios instance with baseURL and token
   const axiosWithToken = axios.create({
     baseURL: BASE_URL,
     headers: { Authorization: `Bearer ${token}` },

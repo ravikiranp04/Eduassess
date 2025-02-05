@@ -23,14 +23,14 @@ function Home() {
         }
 
         if (--timer < 0) {
-          timer = duration; // Reset the timer if needed
+          timer = duration; 
         }
       }, 1000);
 
-      return () => clearInterval(interval); // Clean up the interval on unmount
+      return () => clearInterval(interval); 
     };
 
-    const countdownTimer = 3600; // 1 hour in seconds
+    const countdownTimer = 3600; 
     const display = document.querySelector('#countdown-timer');
     if (display) {
       startCountdown(countdownTimer, display);

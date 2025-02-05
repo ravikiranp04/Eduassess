@@ -105,10 +105,12 @@ studentApp.get('/display-tests/:uname',async(req,res)=>{
    console.log(username)
    const testobj = await testTeacher.find({$and:[{createdBy:username},{validity:true}]}).toArray();
    console.log(testobj)
-   if(testobj.length!=0){
+   if(testobj && testobj.length!=0){
+    console.log("y")
     res.send({message:"The created tests are",payload:testobj})
    }
    else{
+    console.log("x");
     res.send({message:"No tests created"});
    }
 })

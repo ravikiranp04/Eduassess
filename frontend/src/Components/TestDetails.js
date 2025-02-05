@@ -6,7 +6,6 @@ function TestDetails() {
   const [questionPaper, setQuestionPaper] = useState(null);
 
   const generateAssessmentId = () => {
-    // Generate a unique assessment ID (for simplicity, using timestamp)
     setAssessmentId(`AID-${Date.now()}`);
   };
 
@@ -16,14 +15,12 @@ function TestDetails() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here (e.g., send data to the server)
     console.log('Assessment ID:', assessmentId);
     console.log('Question Paper:', questionPaper);
     alert('Assessment Created Successfully!');
   };
 
   const downloadTemplate = () => {
-    // Implement the template download logic (static file or generate dynamically)
     const link = document.createElement('a');
     link.href = 'path-to-your-template-file/template.pdf';
     link.download = 'Question_Template.pdf';
