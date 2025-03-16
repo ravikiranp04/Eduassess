@@ -39,11 +39,14 @@ function UpgradeList() {
       }
 
       if (res.data.message === 'Subscription Successful') {
-        const redirectPath = currentuser.userType === 'Teacher'
-          ? `/teacher-profile/${currentuser.username}/userdashboard`
-          : `/student-profile/${currentuser.username}/studentdashboard`;
+        if(currentuser.userType === 'Teacher'){
+          navigate( `/teacher-profile/${currentuser.username}/userdashboard`, { state: { message: res.data.message } });
 
-        navigate(redirectPath, { state: { message: res.data.message } });
+        }
+        else{
+          navigate( `/student-profile/${currentuser.username}/studentdashboard`, { state: { message: res.data.message } });
+        }
+
       } else {
         setErr(res.data.message);
       }

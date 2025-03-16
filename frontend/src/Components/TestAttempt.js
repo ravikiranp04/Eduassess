@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./CSS/Test.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -13,54 +13,82 @@ function TestAttempt() {
   const [attemptedQuestions, setAttemptedQuestions] = useState([]);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const { state } = useLocation();
-  const [timeLeft, setTimeLeft] = useState(1500); 
+
   const [questions, setQuestions] = useState([]);
-  const [autoExitStatus,setautoExitStatus]=useState(false)
+  const [autoExitStatus, setautoExitStatus] = useState(false);
   const { currentuser } = useSelector((state) => state.userLogin);
   const navigate = useNavigate();
   const token = sessionStorage.getItem("token");
   const axiosWithToken = axios.create({
     headers: { Authorization: `Bearer ${token}` },
   });
-  useEffect(() => {
-    
-    if (state && !questions.length) {
-      setQuestions(state.questions);
-    }
+  const [timeLeft, setTimeLeft] = useState((state?.duration || 25) * 60); // Convert minutes to seconds
 
-    const timer = setInterval(() => {
-      const currentTime = new Date();
-      const endTime = new Date(state.end_time);
+useEffect(() => {
+  if (state && !questions.length) {
+    setQuestions(state.questions);
+  }
 
-      
-      if (currentTime >= endTime || timeLeft <= 0) {
-        handleSubmit(); 
-        clearInterval(timer); 
-      } else {
-        setTimeLeft((prevTime) => prevTime - 1); 
+  if (!state?.end_time) return; // Prevent errors if end_time is missing
+
+  const endTime = new Date(state.end_time);
+  const currentTime = new Date();
+
+  if (currentTime >= endTime || timeLeft <= 0) {
+    handleSubmit();
+    return;
+  }
+
+  const timer = setInterval(() => {
+    setTimeLeft((prevTime) => {
+      if (prevTime <= 1) {
+        handleSubmit();
+        clearInterval(timer);
+        return 0;
       }
-    }, 1000);
+      return prevTime - 1;
+    });
+  }, 1000);
 
-    return () => clearInterval(timer);
-  }, [state, timeLeft, questions]);
+  return () => clearInterval(timer); 
+}, [state, questions]); 
 
 
   // Tab SWitiching
-  useEffect(() => {
-    let visibilityTimeout;
+  const [tabSwitchCount, setTabSwitchCount] = useState(0); 
+  const visibilityTimeout = useRef(null); 
 
+  useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        console.log("Tab is hidden. Submitting the test automatically.");
+        console.log("Tab is hidden. Counting switch...");
 
-        
-        visibilityTimeout = setTimeout(() => {
-          setautoExitStatus(true); 
-          handleSubmit();
-        }, 0); 
+        // ✅ Correctly use the latest tabSwitchCount
+        setTabSwitchCount((prevCount) => {
+          const newCount = prevCount + 1;
+
+          if (newCount > 3) {
+            console.log("Exceeded max tab switches! Submitting test.");
+            setautoExitStatus(true);
+            handleAutoSubmit();
+            return newCount;
+          }
+
+          alert(
+            `Tab switching not allowed. Only ${3 - newCount} attempts left.`
+          );
+          return newCount;
+        });
+
+        // ✅ Use useRef correctly
+        visibilityTimeout.current = setTimeout(() => {
+          console.log("Stayed away for too long! Submitting test.");
+          setautoExitStatus(true);
+          handleAutoSubmit();
+        }, 5000);
       } else {
         console.log("Tab is visible again. Cancelling auto-submit.");
-        clearTimeout(visibilityTimeout);
+        clearTimeout(visibilityTimeout.current);
       }
     };
 
@@ -68,12 +96,9 @@ function TestAttempt() {
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      clearTimeout(visibilityTimeout);
-      setautoExitStatus(false); 
+      clearTimeout(visibilityTimeout.current);
     };
-  }, []); 
-
-
+  }, []);
 
   const handleOptionClick = (questionIndex, optionIndex) => {
     setSelectedOptions((prev) => ({
@@ -103,7 +128,7 @@ function TestAttempt() {
       [currentQuestion]:
         selectedOptions[currentQuestion] !== undefined
           ? selectedOptions[currentQuestion]
-          : null, 
+          : null,
     }));
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
@@ -114,26 +139,23 @@ function TestAttempt() {
     setMarkedQuestions((prev) => {
       const updatedMarks = [...prev];
       if (updatedMarks.includes(currentQuestion)) {
-        return updatedMarks.filter((q) => q !== currentQuestion); 
+        return updatedMarks.filter((q) => q !== currentQuestion);
       } else {
-        return [...updatedMarks, currentQuestion]; 
+        return [...updatedMarks, currentQuestion];
       }
     });
 
-    
     setVisitedQuestions((prev) => [...new Set([...prev, currentQuestion])]);
 
-    
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
     }
   };
 
   const handleClearClick = () => {
-    
     setSelectedOptions((prev) => ({
       ...prev,
-      [currentQuestion]: null, 
+      [currentQuestion]: null,
     }));
   };
 
@@ -141,12 +163,11 @@ function TestAttempt() {
     let correctAnswers = 0;
     let wrongAnswers = 0;
 
-    
     const current = new Date();
     const endHours = String(current.getHours()).padStart(2, "0");
     const endMinutes = String(current.getMinutes()).padStart(2, "0");
     const endTime = `${endHours}:${endMinutes}`;
-    state.end_time = endTime; 
+    state.end_time = endTime;
 
     const [startHours, startMinutes] = state.start_time.split(":").map(Number);
 
@@ -158,18 +179,14 @@ function TestAttempt() {
     const minutes = Math.floor(timeTakenInMinutes);
     const seconds = current.getSeconds();
 
-    
     const formattedTimeSpent = `${String(minutes).padStart(2, "0")}:${String(
       seconds
     ).padStart(2, "0")}`;
 
-    
     questions.forEach((question, index) => {
-      const selectedOption = selectedOptions[index]; 
+      const selectedOption = selectedOptions[index];
 
-     
       if (selectedOption != null) {
-     
         if (selectedOption === +question.validity_answer) {
           correctAnswers++; // Increment correct answers count
         } else {
@@ -186,33 +203,92 @@ function TestAttempt() {
     delete finalObj.validity;
     delete finalObj.test_enddate;
 
-    finalObj.time_taken = formattedTimeSpent; 
+    finalObj.time_taken = formattedTimeSpent;
     finalObj.questions = questions;
     finalObj.marks_scored =
       correctAnswers * finalObj.pos_value - wrongAnswers * finalObj.neg_value;
-
+    finalObj.test_completion = "Successful";
     console.log(finalObj);
     console.log("Correct Answers: ", correctAnswers);
     console.log("Wrong Answers: ", wrongAnswers);
 
     //ending test
-    let confirm = false;
 
-    if (!autoExitStatus) {
-      confirm = window.confirm("Confirm to Submit");
+    let confirm = window.confirm("Confirm to Submit");
+    if (!confirm) return; // If the user cancels, stop execution
+
+    const res = await axiosWithToken.post(
+      `${BASE_URL}/student-api/end-test`,
+      finalObj
+    );
+    if (res.data.message == "Test Ended Successfully") {
+      navigate(`../studentdashboard`, {
+        state: { message: res.data.message },
+      });
     }
-    
-    if (confirm || autoExitStatus) {
-     
-      const res = await axiosWithToken.post(
-        `${BASE_URL}/student-api/end-test`,
-        finalObj
-      );
-      if (res.data.message == "Test Ended Successfully") {
-        navigate(`../studentdashboard`, {
-          state: { message: res.data.message },
-        });
+  };
+
+  const handleAutoSubmit = async () => {
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+
+    const current = new Date();
+    const endHours = String(current.getHours()).padStart(2, "0");
+    const endMinutes = String(current.getMinutes()).padStart(2, "0");
+    const endTime = `${endHours}:${endMinutes}`;
+    state.end_time = endTime;
+
+    const [startHours, startMinutes] = state.start_time.split(":").map(Number);
+
+    const startTotalMinutes = startHours * 60 + startMinutes;
+    const endTotalMinutes = current.getHours() * 60 + current.getMinutes();
+
+    const timeTakenInMinutes = endTotalMinutes - startTotalMinutes;
+
+    const minutes = Math.floor(timeTakenInMinutes);
+    const seconds = current.getSeconds();
+
+    const formattedTimeSpent = `${String(minutes).padStart(2, "0")}:${String(
+      seconds
+    ).padStart(2, "0")}`;
+
+    questions.forEach((question, index) => {
+      const selectedOption = selectedOptions[index];
+
+      if (selectedOption != null) {
+        if (selectedOption === +question.validity_answer) {
+          correctAnswers++; // Increment correct answers count
+        } else {
+          wrongAnswers++; // Increment wrong answers count
+        }
       }
+      question.answer = selectedOption ? selectedOption : 0;
+      question.attempt_status = selectedOption ? true : false;
+    });
+
+    let finalObj = { ...state };
+    finalObj.username = currentuser.username;
+    delete finalObj.students_attempted;
+    delete finalObj.validity;
+    delete finalObj.test_enddate;
+
+    finalObj.time_taken = formattedTimeSpent;
+    finalObj.questions = questions;
+    finalObj.marks_scored =
+      correctAnswers * finalObj.pos_value - wrongAnswers * finalObj.neg_value;
+    finalObj.test_completion = "Auto submitted due to Malpractice (Tab change)";
+    console.log(finalObj);
+    console.log("Correct Answers: ", correctAnswers);
+    console.log("Wrong Answers: ", wrongAnswers);
+
+    const res = await axiosWithToken.post(
+      `${BASE_URL}/student-api/end-test`,
+      finalObj
+    );
+    if (res.data.message == "Test Ended Successfully") {
+      navigate(`../studentdashboard`, {
+        state: { message: "Test Ended due to Tab Switch" },
+      });
     }
   };
 
@@ -246,11 +322,33 @@ function TestAttempt() {
             conditions below:
           </p>
           <ul>
-            <li>You have {state.duration} minutes to complete this test.</li>
-            <li>Make sure you answer all questions before submitting.</li>
-            <li>Once submitted, the test cannot be retaken.</li>
-            <li>Your performance will be evaluated based on your answers.</li>
+            <li>
+              ⏳ You have <strong>{state.duration} minutes</strong> to complete
+              this test.
+            </li>
+            <li>✅ Make sure you answer all questions before submitting.</li>
+            <li>
+              ⚠️ Once submitted, the test <strong>cannot be retaken.</strong>
+            </li>
+            <li>
+              🚨 <strong>Tab Switching Rules:</strong>
+              <ul>
+                <li>
+                  Allowed <strong>only 3 times.</strong>
+                </li>
+                <li>
+                  Each switch must not exceed <strong>5 seconds.</strong>
+                </li>
+                <li>
+                  If exceeded, the test will be <strong>auto-submitted.</strong>
+                </li>
+              </ul>
+            </li>
+            <li>
+              📊 Your performance will be evaluated based on your answers.
+            </li>
           </ul>
+
           <p>Click "Accept" to proceed and start the test.</p>
         </div>
         <button

@@ -166,7 +166,7 @@ function StudentDashboard() {
                       <li><strong>Start Time:</strong> {test.start_time}</li>
                       <li><strong>End Date:</strong> {test.test_enddate}</li>
                       <li><strong>End Time:</strong> {test.end_time}</li>
-                      <li><strong>Duration:</strong> {test.duration}</li>
+                      <li><strong>Duration:</strong> {test.duration} minutes</li>
                     </ul>
                     <button 
                       className="btn btn-success mt-3"

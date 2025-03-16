@@ -90,7 +90,7 @@ function UserDashboard() {
                     
                     setTeacherTests(res.data.payload);
                 } else {
-                    setMessageStatus(state.message);
+                    setMessageStatus(res.data.message);
                     setMessageVisible(true);
                     setTimeout(() => setMessageVisible(false), 3000); // Hide after 3 seconds
                 }

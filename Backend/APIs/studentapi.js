@@ -89,7 +89,7 @@ studentApp.put("/upgrade/:username/:plan_type", async (req, res) => {
   console.log(dbuser);
   const updated=await subCollection.insertOne(dbuser)
   if(updated){
-    res.send({message:"Subscription Successfull"})
+    res.send({message:"Subscription Successful"})
 
   }
   else{
@@ -123,7 +123,7 @@ studentApp.get('/start-test/:st_uname/:uname/:testid/:s_uname/:type',subscriptio
   const st_uname=req.params.st_uname;
   //console.log(test_id," ",username);
   const checkObj = await testAttemptData.findOne({username:st_uname});
-  console.log(checkObj)
+  console.log("chekc", checkObj)
   if(!checkObj){
     console.log("xxxxx")
     const testobj = await testTeacher.findOne({$and:[{createdBy:username},{testid:test_id}]});
@@ -168,8 +168,12 @@ studentApp.get('/start-test/:st_uname/:uname/:testid/:s_uname/:type',subscriptio
 
 //---------------------------------------------End a test-------------------------------
 studentApp.post('/end-test',async(req,res)=>{
+
   const endObj=req.body;
   let user= await testAttemptData.findOne({username:endObj.username});
+
+  //test count inc;
+  let subuser = await subCollection.updateOne({username:endObj.username},{$inc:{tests_used:1}});
   //console.log(user)
   if(!user){
     const newData ={}
