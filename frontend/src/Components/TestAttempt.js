@@ -24,39 +24,38 @@ function TestAttempt() {
   });
   const [timeLeft, setTimeLeft] = useState((state?.duration || 25) * 60); // Convert minutes to seconds
 
-useEffect(() => {
-  if (state && !questions.length) {
-    setQuestions(state.questions);
-  }
+  useEffect(() => {
+    if (state && !questions.length) {
+      setQuestions(state.questions);
+    }
 
-  if (!state?.end_time) return; // Prevent errors if end_time is missing
+    if (!state?.end_time) return; // Prevent errors if end_time is missing
 
-  const endTime = new Date(state.end_time);
-  const currentTime = new Date();
+    const endTime = new Date(state.end_time);
+    const currentTime = new Date();
 
-  if (currentTime >= endTime || timeLeft <= 0) {
-    handleSubmit();
-    return;
-  }
+    if (currentTime >= endTime || timeLeft <= 0) {
+      handleSubmit();
+      return;
+    }
 
-  const timer = setInterval(() => {
-    setTimeLeft((prevTime) => {
-      if (prevTime <= 1) {
-        handleSubmit();
-        clearInterval(timer);
-        return 0;
-      }
-      return prevTime - 1;
-    });
-  }, 1000);
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          handleSubmit();
+          clearInterval(timer);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
 
-  return () => clearInterval(timer); 
-}, [state, questions]); 
-
+    return () => clearInterval(timer);
+  }, [state, questions]);
 
   // Tab SWitiching
-  const [tabSwitchCount, setTabSwitchCount] = useState(0); 
-  const visibilityTimeout = useRef(null); 
+  const [tabSwitchCount, setTabSwitchCount] = useState(0);
+  const visibilityTimeout = useRef(null);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -103,7 +102,7 @@ useEffect(() => {
   const handleOptionClick = (questionIndex, optionIndex) => {
     setSelectedOptions((prev) => ({
       ...prev,
-      [questionIndex]: optionIndex,
+      [questionIndex]: `mcq_op${optionIndex}`,
     }));
     setAttemptedQuestions((prev) => [...new Set([...prev, questionIndex])]);
   };
@@ -187,7 +186,7 @@ useEffect(() => {
       const selectedOption = selectedOptions[index];
 
       if (selectedOption != null) {
-        if (selectedOption === +question.validity_answer) {
+        if (selectedOption === question.validity_answer) {
           correctAnswers++; // Increment correct answers count
         } else {
           wrongAnswers++; // Increment wrong answers count
@@ -226,6 +225,7 @@ useEffect(() => {
         state: { message: res.data.message },
       });
     }
+    console.log()
   };
 
   const handleAutoSubmit = async () => {
@@ -256,7 +256,7 @@ useEffect(() => {
       const selectedOption = selectedOptions[index];
 
       if (selectedOption != null) {
-        if (selectedOption === +question.validity_answer) {
+        if (selectedOption === question.validity_answer) {
           correctAnswers++; // Increment correct answers count
         } else {
           wrongAnswers++; // Increment wrong answers count
@@ -380,24 +380,78 @@ useEffect(() => {
       </header>
       <main className="quiz-main">
         <div className="question-section">
+          <div>
+            {questions[currentQuestion]?.question_type=="mcq" && <p>Single Correct Answer</p>}
+            {questions[currentQuestion]?.question_type=="fib" && <p>Fill in the blanks</p>}
+            {questions[currentQuestion]?.question_type=="descp" && <p>Descriptive Question</p>}
+            {questions[currentQuestion]?.question_type=="num" && <p>Numerical answer</p>}
+          </div>
           <div className="question-text">
             {questions[currentQuestion]?.question}
           </div>
-          <div className="options">
-            {[1, 2, 3, 4].map((optionIndex) => (
-              <button
-                key={optionIndex}
-                className={`option-button ${
-                  selectedOptions[currentQuestion] === optionIndex
-                    ? "selected"
-                    : ""
-                }`}
-                onClick={() => handleOptionClick(currentQuestion, optionIndex)}
-              >
-                {questions[currentQuestion][`option_${optionIndex}`]}
-              </button>
-            ))}
-          </div>
+          {questions[currentQuestion]?.question_type == "mcq" && (
+            <div className="options">
+              {[1, 2, 3, 4].map((optionIndex) => (
+                <button
+                  key={optionIndex}
+                  className={`option-button ${
+                    selectedOptions[currentQuestion] ===`mcq_op${optionIndex}`
+                      ? "selected"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    handleOptionClick(currentQuestion, optionIndex)
+                  }
+                >
+                  {questions[currentQuestion][`option_${optionIndex}`]}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {questions[currentQuestion]?.question_type === "fib" && (
+            <input
+              type="text"
+              className="form-control"
+              value={selectedOptions[currentQuestion] || ""}
+              onChange={(e) =>
+                setSelectedOptions((prev) => ({
+                  ...prev,
+                  [currentQuestion]: e.target.value,
+                }))
+              }
+            />
+          )}
+
+          {questions[currentQuestion]?.question_type === "num" && (
+            <input
+              type="number"
+              step="any"
+              className="form-control"
+              value={selectedOptions[currentQuestion] || ""}
+              onChange={(e) =>
+                setSelectedOptions((prev) => ({
+                  ...prev,
+                  [currentQuestion]: e.target.value,
+                }))
+              }
+            />
+          )}
+
+          {questions[currentQuestion]?.question_type === "descp" && (
+            <textarea
+              className="form-control"
+              rows={6}
+              value={selectedOptions[currentQuestion] || ""}
+              onChange={(e) =>
+                setSelectedOptions((prev) => ({
+                  ...prev,
+                  [currentQuestion]: e.target.value,
+                }))
+              }
+            />
+          )}
+
           <div className="navigation-buttons">
             {currentQuestion > 0 && (
               <button className="back-button" onClick={handleBackClick}>

@@ -10,103 +10,112 @@ const AddQuestion = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset, 
-    setValue, 
+    reset,
+    setValue,
   } = useForm();
   const { currentuser } = useSelector((state) => state.userLogin);
-  const token = sessionStorage.getItem('token');
-    const axiosWithToken = axios.create({
-        headers: { Authorization: `Bearer ${token}` }
-    });
+  const token = sessionStorage.getItem("token");
+  const axiosWithToken = axios.create({
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
   const [subList, setSubList] = useState([]);
   const [selectedSub, setSelectedSub] = useState([]);
- 
+  const [questiontype, setQuestionType] = useState("mcq");
   const navigate = useNavigate();
   const { state } = useLocation();
   const [questionEditStatus, setQuestionEditStatus] = useState(false);
   const [imageFile, setImageFile] = useState(null);
 
-  
   const onSubmit = async (data) => {
-    if(currentuser.username=='admin'){
+    if (currentuser.username == "admin") {
       if (!questionEditStatus) {
-        data.imageFile=imageFile
+        data.imageFile = imageFile;
         data.qs_id = Date.now();
         data.display_status = true;
         const res = await axios.post(`${BASE_URL}/admin-api/add-qs`, data);
-      
+
         if (res.data.message === "Admin Question Created") {
-          navigate(`/admin-profile/dashboard`,{state:{message:"Question Added"}});
+          navigate(`/admin-profile/dashboard`, {
+            state: { message: "Question Added" },
+          });
         } else {
           console.log("try again");
         }
       } else {
-        data.imageFile=imageFile
-        data.qs_id=state.qs_id
+        data.imageFile = imageFile;
+        data.qs_id = state.qs_id;
         console.log(data);
-        const res = await axios.put(`${BASE_URL}/admin-api/modify-qs`,data);
-       
-        if(res.data.message==='Question updated'){
-          navigate(`/admin-profile/dashboard`,{state:{message:"Question Modified"}})
-        }
-        else{
-          navigate(`/admin-profile/dashboard`,{state:{message:"Couldn't Modify Question"}})
+        const res = await axios.put(`${BASE_URL}/admin-api/modify-qs`, data);
+
+        if (res.data.message === "Question updated") {
+          navigate(`/admin-profile/dashboard`, {
+            state: { message: "Question Modified" },
+          });
+        } else {
+          navigate(`/admin-profile/dashboard`, {
+            state: { message: "Couldn't Modify Question" },
+          });
         }
       }
-    }
-    else{
-      if(!questionEditStatus){
-        data.imageFile=imageFile
-      data.userType='Teacher'
-        data.qs_id = Date.now().toString()
+    } else {
+      if (!questionEditStatus) {
+        data.imageFile = imageFile;
+        data.userType = "Teacher";
+        data.qs_id = Date.now().toString();
         data.display_status = true;
-        data.username= currentuser.username
+        data.username = currentuser.username;
         const res = await axios.post(`${BASE_URL}/teacher-api/add-qs`, data);
         console.log(res);
         if (res.data.message === "Teacher Question Created") {
-          navigate(`../userdashboard`,{state:{message:"Question Created"}});
+          navigate(`../userdashboard`, {
+            state: { message: "Question Created" },
+          });
         } else {
           console.log("try again");
         }
-      }
-      else{
-        data.imageFile=imageFile
-        data.qs_id=state.qs_id
-        data.userType=state.userType;
-        data.username=state.username
+      } else {
+        data.imageFile = imageFile;
+        data.qs_id = state.qs_id;
+        data.userType = state.userType;
+        data.username = state.username;
         console.log(data);
-        const res = await axios.put(`${BASE_URL}/teacher-api/modify-qs/${currentuser.username}/Teacher`, data);
+        const res = await axios.put(
+          `${BASE_URL}/teacher-api/modify-qs/${currentuser.username}/Teacher`,
+          data
+        );
         console.log(res);
         if (res.data.message === "Question updated") {
-          navigate(`../test-creation`,{state:{message:"Question Updated"}});
+          navigate(`../test-creation`, {
+            state: { message: "Question Updated" },
+          });
         } else {
           console.log("try again");
         }
       }
     }
-    
-    
+  
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      
+
       reader.onloadend = () => {
         setImageFile(reader.result);
       };
-      console.log(reader)
+      console.log(reader);
       reader.readAsDataURL(file);
     }
   };
 
   useEffect(() => {
     const stateVerify = async () => {
+      console.log(state)
       //console.log(currentuser)
       if (state) {
-        setImageFile(state.imageFile)
+        setImageFile(state.imageFile);
         setQuestionEditStatus(true);
         // Pre-select the subject and subtypes
         reset({
@@ -120,9 +129,9 @@ const AddQuestion = () => {
           option_4: state.option_4,
           difficulty: state.difficulty,
           validity_answer: state.validity_answer,
+          question_type: state.question_type,
         });
         setSelectedSub(state.subtypes || []);
-        
       } else {
         setQuestionEditStatus(false);
       }
@@ -143,19 +152,19 @@ const AddQuestion = () => {
 
     getSubList();
     stateVerify();
-  }, [state, setValue, reset]); 
+  }, [state, setValue, reset]);
 
   const handleSubjectChange = (e) => {
     const selectedSubject = subList.find(
       (sub) => sub.subject === e.target.value
     );
     setSelectedSub(selectedSubject ? selectedSubject.subtypes : []);
-    setValue("sub_type", ""); 
+    setValue("sub_type", "");
   };
 
-  const handleRemoveImage = ()=>{
+  const handleRemoveImage = () => {
     setImageFile(null);
-  }
+  };
 
   return questionEditStatus === false ? (
     <div className="container mt-5">
@@ -216,11 +225,7 @@ const AddQuestion = () => {
 
         <div className="mb-3">
           <label className="form-label">Image URL</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("img")}
-          />
+          <input type="text" className="form-control" {...register("img")} />
         </div>
 
         <div className="mb-3">
@@ -231,55 +236,75 @@ const AddQuestion = () => {
             onChange={handleFileChange}
           />
         </div>
-
         <div className="mb-3">
-          <label className="form-label">Option 1</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_1", { required: true })}
-          />
-          {errors.option_1 && (
-            <div className="text-danger">Option 1 is required.</div>
+          <label className="form-label">Question Type</label>
+          <select
+            className="form-select"
+            defaultValue={"mcq"}
+            {...register("question_type", { required: true })}
+            onChange={(event) => setQuestionType(event.target.value)}
+          >
+            <option value="">Select...</option>
+            <option value="mcq">MCQ</option>
+            <option value="fib">Fill in the blanks</option>
+            <option value="num">Numerical</option>
+            <option value="descp">Descriptive</option>
+          </select>
+          {errors.question_type && (
+            <div className="text-danger">Question Type is required.</div>
           )}
         </div>
 
-        <div className="mb-3">
-          <label className="form-label">Option 2</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_2", { required: true })}
-          />
-          {errors.option_2 && (
-            <div className="text-danger">Option 2 is required.</div>
-          )}
-        </div>
+        {questiontype=="mcq" && <div>
+          <div className="mb-3">
+            <label className="form-label">Option 1</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_1", { required: true })}
+            />
+            {errors.option_1 && (
+              <div className="text-danger">Option 1 is required.</div>
+            )}
+          </div>
 
-        <div className="mb-3">
-          <label className="form-label">Option 3</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_3", { required: true })}
-          />
-          {errors.option_3 && (
-            <div className="text-danger">Option 3 is required.</div>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Option 2</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_2", { required: true })}
+            />
+            {errors.option_2 && (
+              <div className="text-danger">Option 2 is required.</div>
+            )}
+          </div>
 
-        <div className="mb-3">
-          <label className="form-label">Option 4</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_4", { required: true })}
-          />
-          {errors.option_4 && (
-            <div className="text-danger">Option 4 is required.</div>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Option 3</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_3", { required: true })}
+            />
+            {errors.option_3 && (
+              <div className="text-danger">Option 3 is required.</div>
+            )}
+          </div>
 
+          <div className="mb-3">
+            <label className="form-label">Option 4</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_4", { required: true })}
+            />
+            {errors.option_4 && (
+              <div className="text-danger">Option 4 is required.</div>
+            )}
+          </div>
+        </div>}
+        
         <div className="mb-3">
           <label className="form-label">Difficulty</label>
           <select
@@ -298,16 +323,65 @@ const AddQuestion = () => {
 
         <div className="mb-3">
           <label className="form-label">Validity Answer</label>
-          <select
-            className="form-select"
-            {...register("validity_answer", { required: true })}
-          >
-            <option value="">Select...</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 4</option>
-          </select>
+          {questiontype == "mcq" && (
+            <select
+              className="form-select"
+              {...register("validity_answer", { required: true })}
+            >
+              <option value="">Select...</option>
+              <option value="mcq_op1">Option 1</option>
+              <option value="mcq_op2">Option 2</option>
+              <option value="mcq_op3">Option 3</option>
+              <option value="mcq_op4">Option 4</option>
+            </select>
+          )}
+
+          {questiontype == "fib" && (
+            <input
+              type="text"
+              className="form-control"
+              {...register("validity_answer", { required: true })}
+            />
+          )}
+
+          {questiontype === "num" && (
+            <div className="mb-3">
+              <label className="form-label">(Numerical Answer)</label>
+              <input
+                type="number" // Use type="number" for numerical input
+                step="any" // Allows both integers and decimals
+                className="form-control"
+                {...register("validity_answer", {
+                  required: "Numerical Answer is required",
+                  validate: (value) => {
+                    if (isNaN(value)) {
+                      return "Please enter a valid number";
+                    }
+                    return true;
+                  },
+                })}
+              />
+            </div>
+          )}
+
+          {questiontype === "descp" && (
+            <div className="mb-3">
+              <label className="form-label">(Descriptive Answer)</label>
+              <textarea // Use textarea for descriptive answers
+                className="form-control"
+                rows={6} // Set the number of rows for the textarea
+                {...register("validity_answer", {
+                  required: "Descriptive Answer is required",
+                  minLength: {
+                    value: 10,
+                    message:
+                      "Descriptive Answer must be at least 10 characters long",
+                  },
+                })}
+              />
+            </div>
+          )}
+
           {errors.validity_answer && (
             <div className="text-danger">Validity Answer is required.</div>
           )}
@@ -320,7 +394,7 @@ const AddQuestion = () => {
     </div>
   ) : (
     <div className="container mt-5">
-      <h2 className="mb-4">Modify Question</h2>
+      <h2 className="mb-4">Add a New Question</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="needs-validation"
@@ -332,7 +406,7 @@ const AddQuestion = () => {
             className="form-select"
             {...register("subject", { required: true })}
             onChange={handleSubjectChange}
-            defaultValue={state.subject} 
+            defaultValue={state.subject}
           >
             <option value="">Select...</option>
             {subList.map((sub, index) => (
@@ -351,7 +425,7 @@ const AddQuestion = () => {
           <select
             className="form-select"
             {...register("sub_type", { required: true })}
-            defaultValue={state.sub_type} 
+            defaultValue={state.sub_type}
           >
             <option value="">Select...</option>
             {selectedSub.map((subtp, index) => (
@@ -371,6 +445,7 @@ const AddQuestion = () => {
             type="text"
             className="form-control"
             {...register("question", { required: true })}
+            defaultValue={state.question}
           />
           {errors.question && (
             <div className="text-danger">Question is required.</div>
@@ -379,82 +454,98 @@ const AddQuestion = () => {
 
         <div className="mb-3">
           <label className="form-label">Image URL</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("img")}
-          />
+          <input type="text" className="form-control" {...register("img")} defaultValue={state.img} />
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Upload Image (Jpeg Only)</label>
+          <label className="form-label">Upload Image</label>
           <input
             type="file"
             className="form-control"
             onChange={handleFileChange}
+            defaultValue={state.file}
           />
         </div>
-        {
-          imageFile && <div className="d-flex">
-            <img src={imageFile} alt='Upload an Image' style={{height:'400px',width:'250px'}}/>
-            <button className="btn btn-danger m-2" style={{height:'50px'}} onClick={handleRemoveImage}>Remove Image</button>
+        <div className="mb-3">
+          <label className="form-label">Question Type</label>
+          <select
+            className="form-select"
+            defaultValue={state.question_type}
+            {...register("question_type", { required: true })}
+            onChange={(event) => setQuestionType(event.target.value)}
+            
+          >
+            <option value="">Select...</option>
+            <option value="mcq">MCQ</option>
+            <option value="fib">Fill in the blanks</option>
+            <option value="num">Numerical</option>
+            <option value="descp">Descriptive</option>
+          </select>
+          {errors.question_type && (
+            <div className="text-danger">Question Type is required.</div>
+          )}
+        </div>
+
+        {questiontype=="mcq" && <div>
+          <div className="mb-3">
+            <label className="form-label">Option 1</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_1", { required: true })}
+              defaultValue={state.option_1}
+            />
+            {errors.option_1 && (
+              <div className="text-danger">Option 1 is required.</div>
+            )}
           </div>
-          
-        }
 
-        <div className="mb-3">
-          <label className="form-label">Option 1</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_1", { required: true })}
-          />
-          {errors.option_1 && (
-            <div className="text-danger">Option 1 is required.</div>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Option 2</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_2", { required: true })}
+              defaultValue={state.option_2}
+            />
+            {errors.option_2 && (
+              <div className="text-danger">Option 2 is required.</div>
+            )}
+          </div>
 
-        <div className="mb-3">
-          <label className="form-label">Option 2</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_2", { required: true })}
-          />
-          {errors.option_2 && (
-            <div className="text-danger">Option 2 is required.</div>
-          )}
-        </div>
+          <div className="mb-3">
+            <label className="form-label">Option 3</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_3", { required: true })}
+              defaultValue={state.option_3}
+            />
+            {errors.option_3 && (
+              <div className="text-danger">Option 3 is required.</div>
+            )}
+          </div>
 
-        <div className="mb-3">
-          <label className="form-label">Option 3</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_3", { required: true })}
-          />
-          {errors.option_3 && (
-            <div className="text-danger">Option 3 is required.</div>
-          )}
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Option 4</label>
-          <input
-            type="text"
-            className="form-control"
-            {...register("option_4", { required: true })}
-          />
-          {errors.option_4 && (
-            <div className="text-danger">Option 4 is required.</div>
-          )}
-        </div>
-
+          <div className="mb-3">
+            <label className="form-label">Option 4</label>
+            <input
+              type="text"
+              className="form-control"
+              {...register("option_4", { required: true })}
+              defaultValue={state.option_4}
+            />
+            {errors.option_4 && (
+              <div className="text-danger">Option 4 is required.</div>
+            )}
+          </div>
+        </div>}
+        
         <div className="mb-3">
           <label className="form-label">Difficulty</label>
           <select
             className="form-select"
             {...register("difficulty", { required: true })}
+            defaultValue={state.difficulty}
           >
             <option value="">Select...</option>
             <option value="Easy">Easy</option>
@@ -468,23 +559,76 @@ const AddQuestion = () => {
 
         <div className="mb-3">
           <label className="form-label">Validity Answer</label>
-          <select
-            className="form-select"
-            {...register("validity_answer", { required: true })}
-          >
-            <option value="">Select...</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 4</option>
-          </select>
+          {questiontype == "mcq" && (
+            <select
+              className="form-select"
+              {...register("validity_answer", { required: true })}
+              defaultValue={state.validity_answer}
+            >
+              <option value="">Select...</option>
+              <option value="mcq_op1">Option 1</option>
+              <option value="mcq_op2">Option 2</option>
+              <option value="mcq_op3">Option 3</option>
+              <option value="mcq_op4">Option 4</option>
+            </select>
+          )}
+
+          {questiontype == "fib" && (
+            <input
+              type="text"
+              className="form-control"
+              {...register("validity_answer", { required: true })}
+              defaultValue={state.validity_answer}
+            />
+          )}
+
+          {questiontype === "num" && (
+            <div className="mb-3">
+              <label className="form-label">(Numerical Answer)</label>
+              <input
+                type="number" // Use type="number" for numerical input
+                step="any" // Allows both integers and decimals
+                className="form-control"
+                {...register("validity_answer", {
+                  required: "Numerical Answer is required",
+                  validate: (value) => {
+                    if (isNaN(value)) {
+                      return "Please enter a valid number";
+                    }
+                    return true;
+                  },
+                })}
+                defaultValue={state.validity_answer}
+              />
+            </div>
+          )}
+
+          {questiontype === "descp" && (
+            <div className="mb-3">
+              <label className="form-label">(Descriptive Answer)</label>
+              <textarea // Use textarea for descriptive answers
+                className="form-control"
+                rows={6} // Set the number of rows for the textarea
+                {...register("validity_answer", {
+                  required: "Descriptive Answer is required",
+                  minLength: {
+                    value: 10,
+                    message:
+                      "Descriptive Answer must be at least 10 characters long",
+                  },
+                })}
+                defaultValue={state.validity_answer}
+              />
+            </div>
+          )}
+
           {errors.validity_answer && (
             <div className="text-danger">Validity Answer is required.</div>
           )}
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Save Changes
+          Submit
         </button>
       </form>
     </div>
