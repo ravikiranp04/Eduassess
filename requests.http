@@ -116,7 +116,6 @@ GET http://localhost:8000/admin-api/get-subjects
 GET http://localhost:8000/admin-api/get-subject-cat/1718596076
 
 
-
  //---------------------------Teacher operations----------------------------
 ### Teacher  Register
 POST http://localhost:8000/teacher-api/register
@@ -339,6 +338,15 @@ get http://localhost:8000/teacher-api/display-tests/ravi_04
 ###delete a test
 DELETE http://localhost:8000/teacher-api/del-test/1600
 
+### generate a question
+POST http://localhost:8000/teacher-api/generate-question
+Content-Type: application/json 
+
+{
+    "subject":"Database Management Systems",
+    "sub_type":"SQL and Relational Databases"
+}
+
 //---------------Student Operations-------------------------------
 
 
@@ -434,3 +442,5 @@ Content-Type: application/json
 
 ###Display Previous Tests of Student
 GET http://localhost:8000/student-api/display-prev-tests/shiva_04
+
+### Get Student previous tests

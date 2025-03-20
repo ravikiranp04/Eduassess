@@ -113,6 +113,7 @@ function StudentDashboard() {
           {messageStatus}
         </div>
       )}
+      <button className='btn btn-success' onClick={()=>{navigate(`/student-profile/${currentuser.username}/previous-tests`)}}>My Previou Tests</button>
     <h1 className="text-center text-primary mb-4">Search for the Exam</h1>
 
     <div className="row justify-content-center">

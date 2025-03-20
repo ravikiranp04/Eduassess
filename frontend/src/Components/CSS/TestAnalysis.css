@@ -1,0 +1,136 @@
+.test-analysis-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.test-info h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.test-info h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.test-info p {
+    margin-bottom: 8px;
+}
+
+/* Filters */
+.filters {
+    margin-top: 20px;
+}
+
+.filters label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.filters select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* Main Questions Section */
+.questions-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Question Card */
+.question-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #007bff;
+}
+
+.question-type p {
+    font-size: 14px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.question-text h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.question-text p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Options for MCQ */
+.options {
+    margin-top: 10px;
+}
+
+.option-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.option-button:hover {
+    background-color: #f1f1f1;
+}
+
+.option-button.selected {
+    font-weight: bold;
+}
+
+.option-button.selected[style*="green"] {
+    background-color: #d4edda !important;
+    color: #155724;
+}
+
+.option-button.selected[style*="red"] {
+    background-color: #f8d7da !important;
+    color: #721c24;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .test-analysis-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+    
+    .questions-container {
+        max-height: none;
+    }
+}

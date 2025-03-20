@@ -5,6 +5,9 @@ import axios from "axios";
 import { BASE_URL } from "../port";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { HF_API_KEY } from "../port";
+import {pipeline} from '@xenova/transformers'
+ //require('dotenv').config()
 const AddQuestion = () => {
   const {
     register,
@@ -24,9 +27,11 @@ const AddQuestion = () => {
   const [questiontype, setQuestionType] = useState("mcq");
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [questiontext,setQuestionText]=useState(null)
   const [questionEditStatus, setQuestionEditStatus] = useState(false);
+  const [subType,setsubType]=useState(null)
   const [imageFile, setImageFile] = useState(null);
-
+  const [err,setErr]=useState(null)
   const onSubmit = async (data) => {
     if (currentuser.username == "admin") {
       if (!questionEditStatus) {
@@ -166,6 +171,16 @@ const AddQuestion = () => {
     setImageFile(null);
   };
 
+  /*const generateQuestion=async()=>{
+    /*const questionGenerator = await pipeline("text2text-generation", "Xenova/t5-small");
+    
+    const prompt = `generate a question: ${selectedSub} topic ${subType}`;
+    const output = await questionGenerator(prompt, { max_length: 100, num_return_sequences: 1 });
+
+    console.log("Generated Question:", output[0].generated_text);*//*
+  }*/
+
+
   return questionEditStatus === false ? (
     <div className="container mt-5">
       <h2 className="mb-4">Add a New Question</h2>
@@ -198,6 +213,7 @@ const AddQuestion = () => {
           <select
             className="form-select"
             {...register("sub_type", { required: true })}
+            onChange={(e)=>setsubType(e.target.value)}
           >
             <option value="">Select...</option>
             {selectedSub.map((subtp, index) => (
@@ -215,13 +231,16 @@ const AddQuestion = () => {
           <label className="form-label">Question</label>
           <input
             type="text"
+            value={questiontext}
             className="form-control"
             {...register("question", { required: true })}
           />
+          {err && <p className="text-danger">{err}</p>}          
           {errors.question && (
             <div className="text-danger">Question is required.</div>
           )}
         </div>
+       
 
         <div className="mb-3">
           <label className="form-label">Image URL</label>

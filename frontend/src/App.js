@@ -21,6 +21,10 @@ import AdminSubjects from './Components/AdminSubjects';
 import UserDashboard from './Components/UserDashboard';
 import StudentDashboard from './Components/StudentDashboard';
 import TestAttempt from './Components/TestAttempt';
+import StudentProfileDetails from './Components/StudentProfileDetails';
+import TeacherProfileDetails from './Components/TeacherProfileDetails';
+import PreviousTests from './Components/PreviousTests';
+import TestAnalysis from './Components/TestAnalysis';
 function App() {
   const browserRouter = createBrowserRouter([
     {
@@ -66,6 +70,19 @@ function App() {
             {
               path:'',
               element:<Navigate to='studentdashboard'/>
+            },
+            {
+              path:'profile-details',
+              element:<StudentProfileDetails/>
+            },
+            {
+              path:'previous-tests',
+              element:<PreviousTests/>
+              
+            },
+            {
+              path:'test-analysis',
+              element:<TestAnalysis/>
             }
           ]
         },
@@ -100,6 +117,10 @@ function App() {
             {
               path:'',
               element:<Navigate to='userdashboard'/>
+            },
+            {
+              path:'profile-details',
+              element:<TeacherProfileDetails/>
             }
           ]
         },
