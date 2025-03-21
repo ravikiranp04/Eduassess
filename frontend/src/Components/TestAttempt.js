@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../port";
 import { useNavigate } from "react-router-dom";
+import ProctoringPopup from "./ProctoringPopup";
 function TestAttempt() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -23,6 +24,8 @@ function TestAttempt() {
     headers: { Authorization: `Bearer ${token}` },
   });
   const [timeLeft, setTimeLeft] = useState((state?.duration || 25) * 60); // Convert minutes to seconds
+  const [personcount, setPersonCount] = useState(0);
+  //-------------------------------------------
 
   useEffect(() => {
     if (state && !questions.length) {
@@ -225,7 +228,7 @@ function TestAttempt() {
         state: { message: res.data.message },
       });
     }
-    console.log()
+    console.log();
   };
 
   const handleAutoSubmit = async () => {
@@ -287,7 +290,7 @@ function TestAttempt() {
     );
     if (res.data.message == "Test Ended Successfully") {
       navigate(`../studentdashboard`, {
-        state: { message: "Test Ended due to Tab Switch" },
+        state: { message: "Test Ended due to Malpractice" },
       });
     }
   };
@@ -311,6 +314,130 @@ function TestAttempt() {
     return { date, time };
   };
 
+  //-----------------------------------------Webcam proctoring-----------------------------------
+
+  const videoRef = useRef(null);
+  const [detections, setDetections] = useState([]);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    const startMonitoringWithDelay = () => {
+      if (videoRef.current) {
+        startMonitoring();
+      } else {
+        console.warn("videoRef.current is null, retrying in 100ms...");
+        setTimeout(startMonitoringWithDelay, 100);
+      }
+    };
+
+    startMonitoringWithDelay();
+    return () => stopMonitoring();
+  }, []);
+
+  const startMonitoring = async () => {
+    try {
+      console.log("Checking videoRef:", videoRef);
+      console.log("Checking videoRef.current:", videoRef.current);
+
+      if (!videoRef.current) {
+        console.warn("videoRef.current is null, retrying...");
+        return;
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 640, height: 480, facingMode: "user" },
+      });
+
+      console.log("Webcam stream obtained:", stream);
+      videoRef.current.srcObject = stream;
+      videoRef.current.onloadedmetadata = () => {
+        console.log("Video stream loaded successfully");
+        videoRef.current
+          .play()
+          .catch((err) => console.error("Video play error:", err));
+        intervalRef.current = setInterval(() => captureFrame(), 10000);
+      };
+    } catch (err) {
+      console.error("Error accessing webcam:", err);
+      alert("Error accessing webcam. Please check permissions and try again.");
+    }
+  };
+
+  const stopMonitoring = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    if (videoRef.current && videoRef.current.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    }
+  };
+
+  const captureFrame = async () => {
+    if (!videoRef.current || videoRef.current.videoWidth === 0) {
+      console.warn("Video not ready, skipping frame capture...");
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      console.error("Failed to get 2D context for canvas");
+      return;
+    }
+
+    ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(async (blob) => {
+      if (!blob) {
+        console.error("Failed to create image blob");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", blob, "frame.jpg");
+
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/student-api/detect`,
+          formData
+        );
+        console.log("response: ", response);
+        console.log("Detection response:", response.data);
+        setDetections(response.data || []);
+      } catch (err) {
+        console.error("Detection error:", err);
+      }
+    }, "image/jpeg");
+  };
+
+  useEffect(() => {
+    if (!detections || !Array.isArray(detections)) return;
+  
+    const person_Count = detections.filter((item) => item === "person").length;
+    const hasCellPhone = detections.includes("cell phone");
+  
+    if ((person_Count > 1 || hasCellPhone) && personcount < 3) {
+      setPersonCount((prev) => {
+        const newCount = prev + 1;
+        alert(`Malpractice detected.\nOnly ${3 - newCount} Warnings left.`);
+        
+        if (newCount >= 3) {
+          stopMonitoring();
+
+          console.log("Auto Submitting Test\n");
+          handleAutoSubmit()
+        }
+  
+        return newCount;
+      });
+    }
+  }, [detections]);
+  
+
+  //-----------------------------------------------------------------------------------
   return !termsAccepted ? (
     <>
       <div className="terms-backdrop"></div>
@@ -367,6 +494,7 @@ function TestAttempt() {
     </>
   ) : (
     <div className="quiz-page">
+      
       <header className="quiz-header">
         <h1>EduAssess</h1>
         <button
@@ -381,10 +509,18 @@ function TestAttempt() {
       <main className="quiz-main">
         <div className="question-section">
           <div>
-            {questions[currentQuestion]?.question_type=="mcq" && <p>Single Correct Answer</p>}
-            {questions[currentQuestion]?.question_type=="fib" && <p>Fill in the blanks</p>}
-            {questions[currentQuestion]?.question_type=="descp" && <p>Descriptive Question</p>}
-            {questions[currentQuestion]?.question_type=="num" && <p>Numerical answer</p>}
+            {questions[currentQuestion]?.question_type == "mcq" && (
+              <p>Single Correct Answer</p>
+            )}
+            {questions[currentQuestion]?.question_type == "fib" && (
+              <p>Fill in the blanks</p>
+            )}
+            {questions[currentQuestion]?.question_type == "descp" && (
+              <p>Descriptive Question</p>
+            )}
+            {questions[currentQuestion]?.question_type == "num" && (
+              <p>Numerical answer</p>
+            )}
           </div>
           <div className="question-text">
             {questions[currentQuestion]?.question}
@@ -395,7 +531,7 @@ function TestAttempt() {
                 <button
                   key={optionIndex}
                   className={`option-button ${
-                    selectedOptions[currentQuestion] ===`mcq_op${optionIndex}`
+                    selectedOptions[currentQuestion] === `mcq_op${optionIndex}`
                       ? "selected"
                       : ""
                   }`}
@@ -526,6 +662,7 @@ function TestAttempt() {
               <span className="legend-box marked"></span> Marked for Review
             </p>
           </div>
+          <ProctoringPopup videoRef={videoRef} />
         </aside>
       </main>
     </div>

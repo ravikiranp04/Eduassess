@@ -1,6 +1,7 @@
 const exp=require('express')
 const app=exp();
 const path=require('path')
+const cors=require('cors')
 //Importing API
 const adminApp=require('./APIs/adminapi')
 const studentApp=require('./APIs/studentapi')
@@ -11,7 +12,7 @@ app.use('/student-api',studentApp)
 app.use('/teacher-api',teacherApp)
 //accessing content of environment variable file
 require('dotenv').config()
-
+app.use(cors())
 //body parser
 app.use(exp.json())
 

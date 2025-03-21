@@ -233,8 +233,8 @@ function TestCreation() {
           <div style={{width:'80%'}}>
           {question.question_type=="mcq" && <h2>Single Correct Answer</h2>}
           {question.question_type=="fib" && <h2>Fill in the blanks</h2>}
-          {question.question_type=="mcq" && <h2>Numerical Answer</h2>}
-          {question.question_type=="mcq" && <h2>Descriptive Answer</h2>}
+          {question.question_type=="num" && <h2>Numerical Answer</h2>}
+          {question.question_type=="descp" && <h2>Descriptive Answer</h2>}
           <div className="d-flex align-items-center mb-3">
             <h5>
               Subject: <span className="text-danger">{question.subject}</span>

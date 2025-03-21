@@ -194,6 +194,11 @@ function Dashboard() {
     return filteredQuestions.length > 0 ? (
       filteredQuestions.map((question, index) => (
         <div key={index} className="question-card mb-3 p-3 border">
+          {question.question_type=="mcq" && <h2>Single Correct Answer</h2>}
+          {question.question_type=="fib" && <h2>Fill in the blanks</h2>}
+          {question.question_type=="num" && <h2>Numerical Answer</h2>}
+          {question.question_type=="descp" && <h2>Descriptive Answer</h2>}
+          <div>
           <h5>
             Subject: <span className="text-danger">{question.subject}</span>
           </h5>
@@ -204,6 +209,7 @@ function Dashboard() {
             Difficulty:{" "}
             <span className="text-primary">{question.difficulty}</span>
           </h5>
+          </div>
 
           {/* Image URL Preview */}
           <div className="mb-3">
@@ -229,10 +235,14 @@ function Dashboard() {
           </div>
 
           <h4 className="h6">{question.question}</h4>
-          <p>Option 1: {question.option_1}</p>
+          {
+            question.question_type==="mcq" && <div>
+              <p>Option 1: {question.option_1}</p>
           <p>Option 2: {question.option_2}</p>
           <p>Option 3: {question.option_3}</p>
           <p>Option 4: {question.option_4}</p>
+              </div>
+          }
           <p>Correct Answer: {question.validity_answer}</p>
           <div className="d-flex justify-content-around">
             {question.display_status==true && user==0? (

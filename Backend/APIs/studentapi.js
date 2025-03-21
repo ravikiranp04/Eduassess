@@ -5,9 +5,11 @@ const expresshandler = require("express-async-handler");
 const { createStudentorTeacher,loginStudentorTeacher } = require("./Util");
 const {subscriptionVerify}= require('../Middlewares/subscriptionVerify');
 const { toNamespacedPath } = require("path");
+const axios=require('axios')
+const multer=require('multer')
 //body parser
 studentApp.use(exp.json());
-
+const cors=require('cors')
 //midddle ware of objects
 let studentCollection;
 let teacherCollection;
@@ -235,5 +237,34 @@ studentApp.get('/get-teachers',async(req,res)=>{
     const usernames = teachers.map(teacher => teacher.username);
     res.send({message:"usernames are",payload:usernames})
 })
+studentApp.use(cors())
+const upload = multer();
+const FormData = require("form-data");
+//Camera detection
+studentApp.post("/detect", upload.single("image"), async (req, res) => {
+  try {
+    if (!req.file) {
+      console.error("No file received");
+      return res.status(400).json({ error: "No image uploaded" });
+    }
+
+    const formData = new FormData();
+    formData.append("image", req.file.buffer, {
+      filename: "frame.jpg",
+      contentType: "image/jpeg",
+    });
+
+    console.log("Forwarding image to Flask...");
+
+    const response = await axios.post("http://127.0.0.1:5000/detect", formData, {
+      headers: formData.getHeaders(),
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error forwarding image:", error.message);
+    res.status(500).json({ error: "Detection failed" });
+  }
+});
 //export app
 module.exports = studentApp;
