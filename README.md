@@ -131,4 +131,4 @@ EduAssess/
 ## 👤 Author
 
 **Ravikiran Pedapalli**  
-[LinkedIn](https://linkedin.com/in/pedapalli-ravi-kiran) · [GitHub](https://github.com/ravikiranp04)
+[LinkedIn](https://linkedin.com/in/pedapalli-ravi-kiran-ab5006254)
