@@ -4,7 +4,7 @@ A scalable online assessment platform built with a microservices architecture, f
 
 ---
 
-## ⚡ Performance Highlights
+## Performance Highlights
 
 | Metric | Before | After |
 |---|---|---|
@@ -16,7 +16,7 @@ Redis caching was applied across all microservices, achieving a **96% reduction 
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ```
 ┌─────────────┐     ┌──────────────────────┐     ┌─────────────┐
@@ -41,7 +41,7 @@ Redis caching was applied across all microservices, achieving a **96% reduction 
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -54,7 +54,7 @@ Redis caching was applied across all microservices, achieving a **96% reduction 
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 - **Stateless, scalable microservices** — each service independently deployable
 - **JWT Authentication** with role-based access control (Admin / Teacher / Student)
@@ -65,7 +65,7 @@ Redis caching was applied across all microservices, achieving a **96% reduction 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -116,7 +116,7 @@ npm start
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 EduAssess/
@@ -128,7 +128,7 @@ EduAssess/
 
 ---
 
-## 👤 Author
+## Author
 
 **Ravikiran Pedapalli**  
 [LinkedIn](https://linkedin.com/in/pedapalli-ravi-kiran-ab5006254)
